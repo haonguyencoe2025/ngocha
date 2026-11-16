@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Coach</title>
+<style>
+:root{--ink:#10243E;--sub:#5A6B80;--bg:#EEF3F8;--card:#fff;--line:#D9E2EC;--blue:#1F5FD6;--blue2:#E4EDFF;--sun:#FFB400;--ok:#1E9E5A;--okbg:#E3F6EB;--bad:#D6452F;--badbg:#FCE9E5}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;font-size:16px;line-height:1.5}
+header{background:var(--ink);color:#fff;padding:calc(12px + env(safe-area-inset-top,0px)) 18px 14px;display:flex;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:19px;letter-spacing:.2px}
+header small{color:#9FB3CC;display:block;font-size:12px;font-weight:400}
+.stats{display:flex;gap:8px}
+.pill{background:#1c3556;border-radius:20px;padding:5px 11px;font-size:13px;font-weight:600;white-space:nowrap}
+.pill b{color:var(--sun)}
+main{flex:1;overflow-y:auto;padding:16px 16px 24px;max-width:640px;width:100%;margin:0 auto}
+nav{display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;padding:10px 2px 9px;font:inherit;font-size:12px;color:var(--sub);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button span{font-size:21px;line-height:1}
+nav button.on{color:var(--blue);font-weight:700;box-shadow:inset 0 3px 0 var(--blue)}
+h2{font-size:20px;margin:4px 0 12px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:20px;padding:7px 14px;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer;color:var(--ink)}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:12px}
+.fc{min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;user-select:none}
+.fc .en{font-size:34px;font-weight:700}
+.fc .ipa{color:var(--sub);margin-top:2px}
+.fc .vi{font-size:24px;color:var(--blue);font-weight:700}
+.fc .ex{margin-top:10px;color:var(--sub);font-style:italic}
+.hint{color:var(--sub);font-size:13px;text-align:center;margin:6px 0 12px}
+.row{display:flex;gap:10px}
+.btn{flex:1;border:0;border-radius:12px;padding:13px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue);color:#fff}
+.btn.alt{background:var(--blue2);color:var(--blue)}
+.btn.ok{background:var(--okbg);color:var(--ok)}
+.btn.no{background:var(--badbg);color:var(--bad)}
+.spk{border:0;background:var(--blue2);color:var(--blue);width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;flex:none}
+.bar{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--sun);transition:width .3s}
+.q{font-size:19px;font-weight:600;margin-bottom:14px}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:9px;font:inherit;cursor:pointer;color:var(--ink)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.fb{margin:6px 0 12px;padding:10px 12px;border-radius:10px;font-size:15px}
+.fb.ok{background:var(--okbg)}.fb.bad{background:var(--badbg)}
+details{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;padding:0 16px}
+summary{padding:14px 0;font-weight:700;cursor:pointer}
+details .in{padding-bottom:14px}
+.rule{background:var(--blue2);border-radius:10px;padding:10px 12px;margin:8px 0;font-weight:600}
+.eg{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.eg div{flex:1}.eg em{color:var(--sub);font-style:normal;font-size:14px;display:block}
+input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px;font:inherit;margin:10px 0}
+.big{text-align:center;padding:26px 10px}
+.big .n{font-size:54px;font-weight:800;color:var(--blue)}
+.mq{background:var(--sun);color:var(--ink);overflow:hidden;white-space:nowrap;font-weight:700;font-size:14px;padding:6px 0}
+.mq span{display:inline-block;padding-left:100%;animation:mq 14s linear infinite}
+@keyframes mq{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.mq span{animation-duration:30s}}
+.tip{background:#FFF5D6;border-left:4px solid var(--sun);border-radius:8px;padding:9px 12px;margin:8px 0;font-size:15px}
+.spk{width:auto;height:auto;border-radius:20px;padding:8px 14px;font-size:14px;font-weight:700}
+nav button{font-size:12px;font-weight:600}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g .opt{margin:0;text-align:center}
+.sc{font-size:30px;letter-spacing:6px;text-align:center;font-weight:800;color:var(--blue);margin:10px 0}
+.lt{width:38px;padding:8px 0;margin:3px;text-align:center}
+textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px;font:inherit;margin:10px 0}
+.pv{max-width:100%;border-radius:12px;margin-top:10px}
+.tm{font-size:13px;color:var(--sub);margin-top:4px}
+.card{border:2px solid #8FB0F0;border-top:6px solid var(--blue);box-shadow:0 4px 0 #C6D8F8;border-radius:16px}
+.fc{border-color:var(--blue);border-top-width:6px;box-shadow:0 5px 0 #A9C2F3}
+details{border:2px solid #8FB0F0;border-left:6px solid var(--blue);box-shadow:0 3px 0 #C6D8F8;border-radius:16px}
+.opt{border:2px solid #B7C9EA}
+.chip{border:2px solid #8FB0F0;font-weight:600}
+.chip.on{border-color:var(--ink)}
+.btn{box-shadow:0 3px 0 rgba(16,36,62,.25)}
+.btn.alt{border:2px solid #8FB0F0}.btn.ok{border:2px solid var(--ok)}.btn.no{border:2px solid var(--bad)}
+.rule{border:2px solid #8FB0F0}
+input[type=text],textarea{border:2px solid #8FB0F0}
+.card .card{box-shadow:none}
+[data-t=vocab]{--c:#1F5FD6;--cb:#E4EDFF;--cl:#8FB0F0}
+[data-t=quiz]{--c:#1E9E5A;--cb:#E3F6EB;--cl:#8ED1AB}
+[data-t=gram]{--c:#7B3FD1;--cb:#F0E8FF;--cl:#BE9CF0}
+[data-t=talk]{--c:#E0701A;--cb:#FFEFE0;--cl:#F2B98A}
+[data-t=scan]{--c:#0E8A9A;--cb:#DFF4F7;--cl:#7CCAD4}
+[data-t=game]{--c:#D6336C;--cb:#FFE6EF;--cl:#F0A1C0}
+nav{gap:5px;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));background:#fff;border-top:2px solid var(--line)}
+nav button{border:2px solid var(--c);background:var(--cb);color:var(--c);border-radius:12px;padding:9px 1px;font-size:11px;font-weight:700;box-shadow:0 3px 0 var(--c);min-width:0}
+nav button.on{background:var(--c);color:#fff;box-shadow:0 3px 0 rgba(16,36,62,.45);transform:translateY(-2px)}
+main h2{background:var(--c);color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 3px 0 rgba(16,36,62,.25)}
+main .card,main details{border-color:var(--cl);border-top-color:var(--c);box-shadow:0 4px 0 var(--cb)}
+main details{border-left-color:var(--c);border-top-color:var(--cl)}
+main .btn{background:var(--c)}
+main .btn.alt{background:var(--cb);color:var(--c);border-color:var(--cl)}
+main .btn.ok{background:var(--okbg);color:var(--ok)}main .btn.no{background:var(--badbg);color:var(--bad)}
+main .chip{border-color:var(--cl);background:var(--cb);color:var(--c)}
+main .chip.on{background:var(--c);border-color:var(--c);color:#fff}
+main .bar i{background:var(--c)}
+main .rule,main .spk{background:var(--cb);color:var(--c);border:2px solid var(--cl)}
+main .sc,main .fc .vi,main .big .n{color:var(--c)}
+main .opt{border-color:var(--cl)}
+main .opt.ok{border-color:var(--ok);background:var(--okbg)}main .opt.bad{border-color:var(--bad);background:var(--badbg)}
+.ft{background:#fff;color:#1F5FD6;text-align:center;font-size:13px;font-weight:800;padding:6px 10px;border-top:2px solid var(--line);user-select:text}
+.ft a{color:#D6336C;font-weight:800;text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <h1>English Coach<small>Tự học tiếng Anh mỗi ngày</small></h1>
+  <div class="stats"><div class="pill">Chuỗi <b id="st">0</b></div><div class="pill">XP <b id="xp">0</b></div></div>
+</header>
+<div class="mq"><span>Tác giả: Nguyễn Văn Hảo &nbsp;|&nbsp; SĐT: 0913294532</span></div>
+<main id="main"></main>
+<div class="ft">Mọi vấn đề liên hệ Hảo qua mail: <a href="mailto:haonguyencoe@gmail.com">haonguyencoe@gmail.com</a></div>
+<nav id="nav">
+  <button data-t="vocab">Từ vựng</button>
+  <button data-t="quiz">Luyện tập</button>
+  <button data-t="gram">Ngữ pháp</button>
+  <button data-t="talk">Giao tiếp</button>
+  <button data-t="scan">Quét nhãn</button>
+  <button data-t="game">Trò chơi</button>
+</nav>
+
+<script>
+/* ---------- DỮ LIỆU ---------- */
+var VOCAB={
+ "Chào hỏi & Kết bạn":[
+  ["introduce","/ˌɪntrəˈdjuːs/","giới thiệu","Let me introduce myself."],
+  ["neighbor","/ˈneɪbər/","hàng xóm","My neighbor is very kind."],
+  ["colleague","/ˈkɒliːɡ/","đồng nghiệp","She is my colleague."],
+  ["hometown","/ˈhoʊmtaʊn/","quê hương","My hometown is Thanh Hoa."],
+  ["hobby","/ˈhɒbi/","sở thích","My hobby is reading."],
+  ["polite","/pəˈlaɪt/","lịch sự","He is always polite."],
+  ["greet","/ɡriːt/","chào hỏi","We greet each other every morning."],
+  ["friendly","/ˈfrendli/","thân thiện","The staff are friendly."]],
+ "Du lịch":[
+  ["luggage","/ˈlʌɡɪdʒ/","hành lý","Where is my luggage?"],
+  ["reservation","/ˌrezərˈveɪʃn/","đặt chỗ","I have a reservation."],
+  ["departure","/dɪˈpɑːrtʃər/","khởi hành","The departure time is 8 a.m."],
+  ["passport","/ˈpæspɔːrt/","hộ chiếu","Please show your passport."],
+  ["sightseeing","/ˈsaɪtsiːɪŋ/","tham quan","We went sightseeing all day."],
+  ["souvenir","/ˌsuːvəˈnɪr/","quà lưu niệm","I bought a souvenir."],
+  ["delay","/dɪˈleɪ/","sự chậm trễ","The flight has a delay."],
+  ["direction","/dəˈrekʃn/","chỉ dẫn, hướng","Can you give me directions?"]],
+ "Công việc":[
+  ["deadline","/ˈdedlaɪn/","hạn chót","The deadline is Friday."],
+  ["meeting","/ˈmiːtɪŋ/","cuộc họp","I have a meeting at ten."],
+  ["salary","/ˈsæləri/","tiền lương","The salary is good."],
+  ["experience","/ɪkˈspɪriəns/","kinh nghiệm","I have five years of experience."],
+  ["responsible","/rɪˈspɒnsəbl/","chịu trách nhiệm","I am responsible for sales."],
+  ["achieve","/əˈtʃiːv/","đạt được","We achieved our goal."],
+  ["schedule","/ˈskedʒuːl/","lịch trình","Check the schedule, please."],
+  ["improve","/ɪmˈpruːv/","cải thiện","I want to improve my English."]],
+ "Đời sống hằng ngày":[
+  ["grocery","/ˈɡroʊsəri/","tạp hóa, đồ tạp phẩm","I buy groceries on Sunday."],
+  ["borrow","/ˈbɒroʊ/","mượn","Can I borrow your pen?"],
+  ["recommend","/ˌrekəˈmend/","giới thiệu, đề xuất","Can you recommend a restaurant?"],
+  ["comfortable","/ˈkʌmftəbl/","thoải mái","This chair is comfortable."],
+  ["expensive","/ɪkˈspensɪv/","đắt","That phone is too expensive."],
+  ["appointment","/əˈpɔɪntmənt/","cuộc hẹn","I have a doctor appointment."],
+  ["usually","/ˈjuːʒuəli/","thường xuyên","I usually wake up at six."],
+  ["neighborhood","/ˈneɪbərhʊd/","khu phố","This is a quiet neighborhood."]],
+ "Kiểm tra hàng hóa nhập khẩu":[
+  ["inspection","/ɪnˈspekʃn/","kiểm tra, giám định","The goods are under inspection."],
+  ["defect","/ˈdiːfekt/","lỗi, khuyết tật","We found a defect in the product."],
+  ["specification","/ˌspesɪfɪˈkeɪʃn/","thông số kỹ thuật","Check the specification sheet."],
+  ["quality control","/ˈkwɒləti kənˈtroʊl/","kiểm soát chất lượng","Quality control approved the batch."],
+  ["sample","/ˈsæmpl/","hàng mẫu","Please send a sample first."],
+  ["batch","/bætʃ/","lô hàng","This batch has 500 units."],
+  ["certificate of origin","/sərˈtɪfɪkət əv ˈɒrɪdʒɪn/","giấy chứng nhận xuất xứ","Do you have a certificate of origin?"],
+  ["packing list","/ˈpækɪŋ lɪst/","phiếu đóng gói","Compare the goods with the packing list."],
+  ["damaged","/ˈdæmɪdʒd/","hư hỏng","Three boxes arrived damaged."],
+  ["counterfeit","/ˈkaʊntərfɪt/","hàng giả","This is a counterfeit product."],
+  ["compliance","/kəmˈplaɪəns/","sự tuân thủ quy định","The goods meet compliance standards."],
+  ["shortage","/ˈʃɔːrtɪdʒ/","thiếu hàng","There is a shortage of 20 pieces."]],
+ "Xuất nhập khẩu & vận chuyển":[
+  ["invoice","/ˈɪnvɔɪs/","hóa đơn","Please send the invoice."],
+  ["customs","/ˈkʌstəmz/","hải quan","The goods are held at customs."],
+  ["tariff","/ˈtærɪf/","thuế quan","The tariff is 10 percent."],
+  ["shipment","/ˈʃɪpmənt/","lô hàng vận chuyển","The shipment arrives on Monday."],
+  ["container","/kənˈteɪnər/","container","We need a 40-foot container."],
+  ["supplier","/səˈplaɪər/","nhà cung cấp","Our supplier is in Shenzhen."],
+  ["freight","/freɪt/","cước vận chuyển","The freight cost is high."],
+  ["bill of lading","/bɪl əv ˈleɪdɪŋ/","vận đơn","Please check the bill of lading."],
+  ["import","/ɪmˈpɔːrt/","nhập khẩu","We import machines from Japan."],
+  ["warehouse","/ˈwerhaʊs/","nhà kho","Store the goods in the warehouse."]],
+ "Mua sắm & thanh toán":[
+  ["discount","/ˈdɪskaʊnt/","giảm giá","Is there a discount?"],
+  ["receipt","/rɪˈsiːt/","biên lai","Keep the receipt."],
+  ["refund","/ˈriːfʌnd/","hoàn tiền","I want a refund."],
+  ["warranty","/ˈwɒrənti/","bảo hành","It has a one-year warranty."],
+  ["bargain","/ˈbɑːrɡən/","mặc cả, món hời","That was a bargain."],
+  ["cash","/kæʃ/","tiền mặt","Do you accept cash?"],
+  ["exchange","/ɪksˈtʃeɪndʒ/","đổi hàng","Can I exchange this shirt?"],
+  ["afford","/əˈfɔːrd/","đủ khả năng chi trả","I can’t afford it."]],
+ "Sức khỏe":[
+  ["symptom","/ˈsɪmptəm/","triệu chứng","What are your symptoms?"],
+  ["prescription","/prɪˈskrɪpʃn/","đơn thuốc","I need a prescription."],
+  ["allergic","/əˈlɜːrdʒɪk/","dị ứng","I am allergic to seafood."],
+  ["fever","/ˈfiːvər/","sốt","She has a high fever."],
+  ["headache","/ˈhedeɪk/","đau đầu","I have a headache."],
+  ["pharmacy","/ˈfɑːrməsi/","hiệu thuốc","The pharmacy is open now."],
+  ["recover","/rɪˈkʌvər/","hồi phục","He will recover soon."],
+  ["injury","/ˈɪndʒəri/","chấn thương","He has a knee injury."]],
+ "Công nghệ & Internet":[
+  ["download","/ˈdaʊnloʊd/","tải xuống","Download the app."],
+  ["password","/ˈpæswɜːrd/","mật khẩu","I forgot my password."],
+  ["update","/ʌpˈdeɪt/","cập nhật","Please update the software."],
+  ["battery","/ˈbætəri/","pin","My battery is low."],
+  ["browse","/braʊz/","duyệt web","I browse the web daily."],
+  ["attachment","/əˈtætʃmənt/","tệp đính kèm","See the attachment."],
+  ["wireless","/ˈwaɪərləs/","không dây","This is a wireless mouse."],
+  ["delete","/dɪˈliːt/","xóa","Don’t delete that file."]],
+ "Nhà hàng & Ẩm thực":[
+  ["appetizer","/ˈæpɪtaɪzər/","món khai vị","We ordered an appetizer."],
+  ["main course","/meɪn kɔːrs/","món chính","The main course is fish."],
+  ["delicious","/dɪˈlɪʃəs/","ngon","This soup is delicious."],
+  ["spicy","/ˈspaɪsi/","cay","Is it spicy?"],
+  ["vegetarian","/ˌvedʒəˈteriən/","người ăn chay","I am vegetarian."],
+  ["tip","/tɪp/","tiền boa","Leave a tip."],
+  ["takeaway","/ˈteɪkəweɪ/","mang đi","Two takeaway coffees, please."],
+  ["ingredient","/ɪnˈɡriːdiənt/","nguyên liệu","What are the ingredients?"]],
+ "Kiểm hàng: Lỗi hàng hóa":[
+  ["scratch","/skrætʃ/","vết xước","There is a scratch on the screen."],
+  ["dent","/dent/","vết móp","The box has a dent."],
+  ["crack","/kræk/","vết nứt","I see a crack in the glass."],
+  ["stain","/steɪn/","vết bẩn","The fabric has a stain."],
+  ["leak","/liːk/","rò rỉ","The bottle has a leak."],
+  ["rust","/rʌst/","gỉ sét","The metal parts have rust."],
+  ["faulty","/ˈfɔːlti/","bị lỗi, hỏng","This device is faulty."],
+  ["missing","/ˈmɪsɪŋ/","thiếu","Two items are missing."],
+  ["wrong item","/rɒŋ ˈaɪtəm/","sai hàng","We received the wrong item."],
+  ["deformed","/dɪˈfɔːrmd/","biến dạng","The frame is deformed."]],
+ "Kiểm hàng: Bao bì & nhãn mác":[
+  ["carton","/ˈkɑːrtn/","thùng carton","Open the carton carefully."],
+  ["pallet","/ˈpælət/","pallet, kệ nâng hàng","One pallet holds 40 cartons."],
+  ["label","/ˈleɪbl/","nhãn","The label is unclear."],
+  ["barcode","/ˈbɑːrkoʊd/","mã vạch","Scan the barcode."],
+  ["seal","/siːl/","niêm phong","The seal is broken."],
+  ["fragile","/ˈfrædʒaɪl/","dễ vỡ","Handle with care. It is fragile."],
+  ["expiry date","/ɪkˈspaɪri deɪt/","hạn sử dụng","Check the expiry date."],
+  ["batch number","/bætʃ ˈnʌmbər/","số lô","The batch number is missing."],
+  ["net weight","/net weɪt/","trọng lượng tịnh","The net weight is 5 kg."],
+  ["gross weight","/ɡroʊs weɪt/","trọng lượng cả bì","Gross weight is 5.5 kg."]],
+ "Kiểm hàng: Tiêu chuẩn & xử lý":[
+  ["tolerance","/ˈtɒlərəns/","dung sai","The size is within tolerance."],
+  ["AQL","/eɪ kjuː el/","mức chất lượng chấp nhận","We inspect at AQL 2.5."],
+  ["test report","/test rɪˈpɔːrt/","báo cáo thử nghiệm","Please attach the test report."],
+  ["safety standard","/ˈseɪfti ˈstændərd/","tiêu chuẩn an toàn","It meets the safety standard."],
+  ["clearance","/ˈklɪrəns/","thông quan","Customs clearance takes two days."],
+  ["reject","/rɪˈdʒekt/","từ chối, loại bỏ","We reject defective units."],
+  ["approve","/əˈpruːv/","phê duyệt","QC approved the shipment."],
+  ["rework","/ˌriːˈwɜːrk/","làm lại, sửa lại","The batch needs rework."],
+  ["claim","/kleɪm/","khiếu nại, bồi thường","We will file a claim."],
+  ["traceability","/ˌtreɪsəˈbɪləti/","truy xuất nguồn gốc","Traceability is required."]],
+ "Hợp đồng thương mại":[
+  ["contract","/ˈkɒntrækt/","hợp đồng","We signed the contract."],
+  ["clause","/klɔːz/","điều khoản","Read clause 5 carefully."],
+  ["party","/ˈpɑːrti/","bên (trong hợp đồng)","Both parties agree."],
+  ["terms and conditions","/tɜːrmz ənd kənˈdɪʃnz/","điều khoản và điều kiện","Accept the terms and conditions."],
+  ["breach","/briːtʃ/","vi phạm hợp đồng","This is a breach of contract."],
+  ["penalty","/ˈpenəlti/","tiền phạt","A late penalty applies."],
+  ["force majeure","/fɔːrs mæˈʒɜːr/","bất khả kháng","Floods are force majeure."],
+  ["arbitration","/ˌɑːrbɪˈtreɪʃn/","trọng tài","Disputes go to arbitration."],
+  ["governing law","/ˈɡʌvərnɪŋ lɔː/","luật điều chỉnh","The governing law is Vietnamese law."],
+  ["amendment","/əˈmendmənt/","sửa đổi, phụ lục","We signed an amendment."],
+  ["terminate","/ˈtɜːrmɪneɪt/","chấm dứt","Either party may terminate."],
+  ["liability","/ˌlaɪəˈbɪləti/","trách nhiệm pháp lý","Liability is limited."]],
+ "Thanh toán quốc tế & L/C":[
+  ["letter of credit","/ˈletər əv ˈkredɪt/","thư tín dụng (L/C)","We pay by letter of credit."],
+  ["issuing bank","/ˈɪʃuːɪŋ bæŋk/","ngân hàng phát hành","The issuing bank opens the L/C."],
+  ["advising bank","/ədˈvaɪzɪŋ bæŋk/","ngân hàng thông báo","The advising bank informs the seller."],
+  ["beneficiary","/ˌbenɪˈfɪʃieri/","người thụ hưởng","The seller is the beneficiary."],
+  ["applicant","/ˈæplɪkənt/","người yêu cầu mở L/C","The buyer is the applicant."],
+  ["irrevocable","/ɪˈrevəkəbl/","không thể hủy ngang","It is an irrevocable L/C."],
+  ["at sight","/æt saɪt/","trả ngay khi xuất trình","Payment at sight."],
+  ["usance","/ˈjuːzns/","trả chậm","A usance L/C allows 60 days."],
+  ["telegraphic transfer","/ˌtelɪˈɡræfɪk ˈtrænsfɜːr/","chuyển tiền bằng điện (T/T)","We pay by T/T."],
+  ["advance payment","/ədˈvæns ˈpeɪmənt/","thanh toán trước","30 percent advance payment."],
+  ["discrepancy","/dɪˈskrepənsi/","sai lệch chứng từ","The bank found a discrepancy."],
+  ["documents against payment","/ˈdɒkjumənts əˈɡenst ˈpeɪmənt/","nhờ thu trả tiền đổi chứng từ (D/P)","We use documents against payment."]],
+ "Incoterms 2020":[
+  ["EXW","/iː eks ˈdʌbəljuː/","giao tại xưởng: người mua chịu gần như mọi chi phí","Price EXW Hanoi factory."],
+  ["FCA","/ef siː eɪ/","giao cho người chuyên chở: người bán giao hàng đã thông quan xuất","Price FCA Shanghai."],
+  ["FAS","/ef eɪ es/","giao dọc mạn tàu","FAS port of Haiphong."],
+  ["FOB","/ef oʊ biː/","giao lên tàu: rủi ro chuyển khi hàng qua lan can tàu","The price is FOB Haiphong."],
+  ["CFR","/siː ef ɑːr/","tiền hàng và cước phí","CFR Los Angeles."],
+  ["CIF","/siː aɪ ef/","tiền hàng, bảo hiểm, cước phí","The price is CIF Sydney."],
+  ["CPT","/siː piː tiː/","cước phí trả tới nơi đến","CPT Hanoi."],
+  ["CIP","/siː aɪ piː/","cước phí và bảo hiểm trả tới nơi đến","CIP Singapore."],
+  ["DAP","/diː eɪ piː/","giao tại nơi đến, chưa dỡ hàng","DAP Ho Chi Minh warehouse."],
+  ["DPU","/diː piː juː/","giao tại nơi đến đã dỡ hàng","DPU our factory."],
+  ["DDP","/diː diː piː/","giao đã trả thuế: người bán chịu tối đa","DDP Danang, duties paid."],
+  ["Incoterms","/ˈɪnkoʊtɜːrmz/","điều kiện thương mại quốc tế","We use Incoterms 2020."]],
+ "Chứng từ xuất nhập khẩu":[
+  ["commercial invoice","/kəˈmɜːrʃl ˈɪnvɔɪs/","hóa đơn thương mại","Attach the commercial invoice."],
+  ["proforma invoice","/proʊˈfɔːrmə ˈɪnvɔɪs/","hóa đơn chiếu lệ","Send a proforma invoice."],
+  ["purchase order","/ˈpɜːrtʃəs ˈɔːrdər/","đơn đặt hàng","We issued a purchase order."],
+  ["quotation","/kwoʊˈteɪʃn/","bảng báo giá","Please send a quotation."],
+  ["airway bill","/ˈerweɪ bɪl/","vận đơn hàng không","The airway bill is attached."],
+  ["insurance policy","/ɪnˈʃʊrəns ˈpɒləsi/","hợp đồng bảo hiểm","Cargo insurance policy."],
+  ["customs declaration","/ˈkʌstəmz ˌdekləˈreɪʃn/","tờ khai hải quan","File a customs declaration."],
+  ["inspection certificate","/ɪnˈspekʃn sərˈtɪfɪkət/","chứng thư giám định","An inspection certificate is required."],
+  ["bill of exchange","/bɪl əv ɪksˈtʃeɪndʒ/","hối phiếu","Draw a bill of exchange."],
+  ["delivery order","/dɪˈlɪvəri ˈɔːrdər/","lệnh giao hàng","Present the delivery order."]],
+ "Kinh tế & tài chính":[
+  ["inflation","/ɪnˈfleɪʃn/","lạm phát","Inflation is rising."],
+  ["exchange rate","/ɪksˈtʃeɪndʒ reɪt/","tỷ giá","The exchange rate changed."],
+  ["revenue","/ˈrevənuː/","doanh thu","Revenue grew by 12 percent."],
+  ["profit margin","/ˈprɒfɪt ˈmɑːrdʒɪn/","biên lợi nhuận","Our profit margin is low."],
+  ["asset","/ˈæset/","tài sản","Land is a fixed asset."],
+  ["supply and demand","/səˈplaɪ ənd dɪˈmænd/","cung và cầu","Price follows supply and demand."],
+  ["trade deficit","/treɪd ˈdefɪsɪt/","thâm hụt thương mại","The country has a trade deficit."],
+  ["subsidy","/ˈsʌbsədi/","trợ cấp","Farmers receive a subsidy."],
+  ["quota","/ˈkwoʊtə/","hạn ngạch","There is an import quota."],
+  ["overhead","/ˈoʊvərhed/","chi phí gián tiếp","Reduce overhead costs."]]
+};
+function addT(n,t){VOCAB[n]=t.trim().split("\n").map(function(l){var a=l.split("|");return [a[0].trim(),"",a[1].trim(),a[2].trim()]})}
+addT("Gia đình & Quan hệ",`relative|họ hàng|My relatives live in Hanoi.
+sibling|anh chị em ruột|I have two siblings.
+spouse|vợ hoặc chồng|Her spouse works abroad.
+grandparent|ông bà|My grandparents tell great stories.
+nephew|cháu trai|My nephew is five years old.
+cousin|anh chị em họ|My cousin visits every summer.
+adopt|nhận nuôi|They adopted a child.
+raise|nuôi dạy|She raised three children.
+generation|thế hệ|The older generation values tradition.
+trust|sự tin tưởng|Trust is important in a friendship.
+argue|cãi nhau|They often argue about money.
+support|ủng hộ, hỗ trợ|My family always supports me.`)
+addT("Nhà ở & Thành phố",`apartment|căn hộ|We rent a small apartment.
+landlord|chủ nhà|The landlord raised the rent.
+tenant|người thuê nhà|The tenant pays on the first day.
+deposit|tiền đặt cọc|The deposit is one month’s rent.
+furniture|đồ nội thất|The apartment has new furniture.
+suburb|vùng ngoại ô|They live in the suburbs.
+traffic|giao thông, xe cộ|Traffic is heavy at rush hour.
+crowded|đông đúc|The market is crowded.
+pavement|vỉa hè|Walk on the pavement.
+junction|ngã tư|Turn left at the junction.
+public transport|giao thông công cộng|Public transport is cheap here.
+facilities|tiện ích, cơ sở vật chất|The area has good facilities.`)
+addT("Tính cách & Cảm xúc",`confident|tự tin|She is a confident speaker.
+shy|nhút nhát|He is shy with strangers.
+generous|hào phóng|My uncle is very generous.
+reliable|đáng tin cậy|Our supplier is reliable.
+stubborn|bướng bỉnh|He is too stubborn to listen.
+anxious|lo lắng|I feel anxious before exams.
+grateful|biết ơn|I am grateful for your help.
+disappointed|thất vọng|We were disappointed with the result.
+embarrassed|xấu hổ|She felt embarrassed.
+curious|tò mò|Children are curious by nature.
+cheerful|vui vẻ|The staff are cheerful.
+exhausted|kiệt sức|I am exhausted after work.`)
+addT("Thể thao & Giải trí",`tournament|giải đấu|They won the tournament.
+champion|nhà vô địch|She is the national champion.
+exercise|tập thể dục|I exercise every morning.
+stadium|sân vận động|The stadium holds 40,000 people.
+referee|trọng tài|The referee stopped the game.
+audience|khán giả|The audience applauded.
+concert|buổi hòa nhạc|We went to a concert.
+film|phim|The film starts at eight.
+festival|lễ hội|The festival lasts three days.
+rehearse|diễn tập|The band rehearsed all week.
+gallery|phòng triển lãm|We visited an art gallery.
+entertain|giải trí|Magic shows entertain children.`)
+addT("Thời tiết & Thiên nhiên",`forecast|dự báo|The forecast says it will rain.
+humid|ẩm ướt|The air is hot and humid.
+thunderstorm|giông bão|A thunderstorm hit the city.
+flood|lũ lụt|The flood damaged many houses.
+breeze|gió nhẹ|A cool breeze came from the sea.
+temperature|nhiệt độ|The temperature dropped at night.
+mountain|núi|We climbed the mountain.
+waterfall|thác nước|The waterfall is beautiful.
+wildlife|động vật hoang dã|The park protects wildlife.
+harvest|thu hoạch|The harvest begins in October.
+earthquake|động đất|The earthquake was strong.
+typhoon|bão nhiệt đới|The typhoon is coming.`)
+addT("Học tập & Văn phòng",`assignment|bài tập, nhiệm vụ|Finish the assignment by Friday.
+lecture|bài giảng|The lecture was interesting.
+semester|học kỳ|The semester starts in September.
+fluent|lưu loát|She is fluent in English.
+vocabulary|từ vựng|Reading builds your vocabulary.
+pronunciation|cách phát âm|Practice your pronunciation daily.
+colleague|đồng nghiệp|I discussed it with a colleague.
+stationery|văn phòng phẩm|We need more stationery.
+agenda|chương trình nghị sự|Check the agenda before the meeting.
+minutes|biên bản họp|Who will take the minutes?
+proposal|đề xuất|We submitted a proposal.
+feedback|phản hồi|Thank you for your feedback.`)
+addT("Cấp 2: Trường học & môn học",`subject|môn học|My favorite subject is English.
+homework|bài tập về nhà|I do my homework after dinner.
+timetable|thời khóa biểu|Check the timetable for tomorrow.
+classmate|bạn cùng lớp|My classmate helps me with math.
+teacher|giáo viên|Our teacher is kind.
+lesson|bài học|Today’s lesson is about animals.
+exam|kỳ thi|We have an exam on Friday.
+library|thư viện|I read books in the library.
+uniform|đồng phục|We wear a uniform to school.
+playground|sân chơi|Children play in the playground.
+science|môn khoa học|Science is very interesting.
+history|môn lịch sử|We learn history on Monday.`)
+addT("Cấp 2: Nhà cửa & phòng ốc",`bedroom|phòng ngủ|My bedroom is small.
+kitchen|nhà bếp|Mom is cooking in the kitchen.
+bathroom|phòng tắm|The bathroom is next to my room.
+living room|phòng khách|We watch TV in the living room.
+garden|khu vườn|There are flowers in the garden.
+wardrobe|tủ quần áo|My clothes are in the wardrobe.
+fridge|tủ lạnh|Put the milk in the fridge.
+sofa|ghế sofa|The cat sleeps on the sofa.
+curtain|rèm cửa|Please close the curtain.
+stairs|cầu thang|Our house has many stairs.
+roof|mái nhà|The roof is red.
+floor|sàn nhà, tầng|My room is on the second floor.`)
+addT("Cấp 2: Thức ăn & đồ uống",`breakfast|bữa sáng|I eat breakfast at seven.
+lunch|bữa trưa|We have lunch at school.
+dinner|bữa tối|Dinner is ready.
+noodles|mì, phở, bún|I like noodles for breakfast.
+rice|cơm, gạo|We eat rice every day.
+vegetable|rau củ|Eat more vegetables.
+fruit|trái cây|Fruit is good for you.
+beef|thịt bò|Beef noodle soup is my favorite.
+egg|trứng|I have an egg for breakfast.
+juice|nước ép|Do you want some orange juice?
+snack|đồ ăn vặt|Don’t eat too many snacks.
+delicious|ngon|The cake is delicious.`)
+addT("Cấp 2: Động vật",`elephant|con voi|The elephant is very big.
+tiger|con hổ|A tiger lives in the forest.
+monkey|con khỉ|The monkey likes bananas.
+rabbit|con thỏ|The rabbit eats carrots.
+buffalo|con trâu|A buffalo works in the field.
+chicken|con gà|The chicken has many eggs.
+dolphin|cá heo|The dolphin is very smart.
+butterfly|con bướm|A butterfly is on the flower.
+snake|con rắn|Be careful of the snake.
+pet|thú cưng|My pet is a small dog.
+bird|con chim|The bird sings in the tree.
+fish|con cá|There are fish in the pond.`)
+addT("Cấp 2: Cơ thể & sức khỏe",`head|cái đầu|I have a pain in my head.
+shoulder|vai|My shoulder hurts.
+stomach|bụng, dạ dày|My stomach hurts.
+tooth|cái răng|Brush your tooth twice a day.
+throat|cổ họng|I have a sore throat.
+cough|ho|He has a bad cough.
+cold|cảm lạnh|I caught a cold.
+medicine|thuốc|Take this medicine twice a day.
+healthy|khỏe mạnh|Eat well to stay healthy.
+rest|nghỉ ngơi|You should rest at home.
+sleep|giấc ngủ, ngủ|I sleep eight hours a night.
+wash|rửa|Wash your hands before eating.`)
+addT("Cấp 2: Quần áo & màu sắc",`shirt|áo sơ mi|He wears a white shirt.
+jacket|áo khoác|Take your jacket. It’s cold.
+dress|váy đầm|She has a beautiful dress.
+trousers|quần dài|My trousers are blue.
+shoes|giày|I need new shoes.
+hat|cái mũ|Wear a hat in the sun.
+scarf|khăn quàng|The scarf is warm.
+pocket|túi áo|My phone is in my pocket.
+colorful|nhiều màu sắc|The market is colorful.
+purple|màu tím|My bag is purple.
+yellow|màu vàng|Sunflowers are yellow.
+fashion|thời trang|She loves fashion.`)
+addT("Cấp 2: Nghề nghiệp",`doctor|bác sĩ|The doctor is very kind.
+nurse|y tá|The nurse helps patients.
+farmer|nông dân|The farmer grows rice.
+engineer|kỹ sư|My father is an engineer.
+driver|tài xế|The driver is careful.
+police officer|cảnh sát|A police officer helps people.
+firefighter|lính cứu hỏa|The firefighter saves lives.
+singer|ca sĩ|She wants to be a singer.
+artist|họa sĩ|The artist paints a picture.
+cook|đầu bếp|The cook makes great soup.
+pilot|phi công|The pilot flies the plane.
+journalist|nhà báo|The journalist writes news.`)
+addT("Cấp 2: Phương tiện & giao thông",`bicycle|xe đạp|I go to school by bicycle.
+motorbike|xe máy|He rides a motorbike.
+bus|xe buýt|The bus stops here.
+train|tàu hỏa|The train leaves at nine.
+airplane|máy bay|The airplane is fast.
+taxi|xe taxi|Let’s take a taxi.
+helmet|mũ bảo hiểm|Always wear a helmet.
+traffic light|đèn giao thông|Stop at the red traffic light.
+crossroads|ngã tư|Turn left at the crossroads.
+bridge|cây cầu|The bridge is very long.
+station|nhà ga, trạm|Meet me at the station.
+ticket|vé|I bought a ticket.`)
+addT("Cấp 2: Lễ hội & Tết",`festival|lễ hội|We enjoy the Lantern Festival.
+celebrate|ăn mừng, kỷ niệm|We celebrate Tet with our family.
+lucky money|tiền lì xì|Children get lucky money at Tet.
+fireworks|pháo hoa|We watch the fireworks.
+decorate|trang trí|We decorate the house with flowers.
+traditional|truyền thống|Banh chung is a traditional food.
+costume|trang phục (biểu diễn)|They wear costumes for the show.
+parade|cuộc diễu hành|The parade is on the main street.
+ancestor|tổ tiên|We pray to our ancestors.
+holiday|kỳ nghỉ, ngày lễ|I have a long holiday.
+gift|món quà|I gave my mom a gift.
+wish|lời chúc, ước|Make a wish.`)
+addT("Cấp 2: Địa điểm trong thành phố",`museum|bảo tàng|We visited the museum.
+market|chợ|Mom goes to the market.
+hospital|bệnh viện|The hospital is near my house.
+post office|bưu điện|The post office is on the corner.
+supermarket|siêu thị|We shop at the supermarket.
+cinema|rạp chiếu phim|Let’s go to the cinema.
+bank|ngân hàng|The bank opens at eight.
+park|công viên|We play in the park.
+restaurant|nhà hàng|The restaurant is full.
+pharmacy|hiệu thuốc|Buy some medicine at the pharmacy.
+bakery|tiệm bánh|The bakery smells good.
+temple|đền, chùa|They visit the temple.`)
+addT("Cấp 2: Môi trường xanh",`recycle|tái chế|We recycle paper and bottles.
+rubbish|rác|Put the rubbish in the bin.
+plastic bag|túi ni lông|Don’t use plastic bags.
+save energy|tiết kiệm năng lượng|Turn off lights to save energy.
+plant trees|trồng cây|Let’s plant trees at school.
+clean|sạch, làm sạch|Keep the street clean.
+protect|bảo vệ|We must protect nature.
+reuse|tái sử dụng|You can reuse old bottles.
+waste|chất thải, lãng phí|Don’t waste water.
+solar|thuộc mặt trời|Solar power is clean.
+smoke|khói|The smoke is bad for health.
+earth|trái đất|We love our Earth.`)
+addT("Cấp 2: Sở thích & thời gian rảnh",`hobby|sở thích|My hobby is drawing.
+collect|sưu tầm|He collects stamps.
+chess|cờ vua|I play chess with my dad.
+guitar|đàn ghi-ta|She plays the guitar well.
+camping|đi cắm trại|We go camping in summer.
+cycling|đạp xe|Cycling is good exercise.
+swimming|bơi lội|I like swimming in the pool.
+painting|vẽ tranh|Painting makes me relax.
+puzzle|trò xếp hình, câu đố|We solved the puzzle together.
+board game|trò chơi bàn cờ|Let’s play a board game.
+volunteer|tình nguyện|I volunteer at the library.
+relax|thư giãn|I relax after school.`)
+addT("Cấp 2: Hoạt động hằng ngày",`wake up|thức dậy|I wake up at six.
+brush|đánh (răng), chải|Brush your teeth after meals.
+get dressed|mặc quần áo|I get dressed quickly.
+have a shower|tắm vòi sen|I have a shower every evening.
+go to bed|đi ngủ|I go to bed at ten.
+do the dishes|rửa chén|I do the dishes after dinner.
+sweep|quét nhà|I sweep the floor on Sunday.
+tidy up|dọn dẹp|Please tidy up your room.
+take a bus|đi xe buýt|I take a bus to school.
+chat|trò chuyện|We chat during the break.
+prepare|chuẩn bị|Prepare your bag the night before.
+finish|hoàn thành|Finish your homework first.`)
+addT("Cấp 2: Tính từ thông dụng",`beautiful|đẹp|The beach is beautiful.
+ugly|xấu|The old building looks ugly.
+tall|cao|My brother is tall.
+short|thấp, ngắn|This road is short.
+strong|khỏe, mạnh|He is strong.
+weak|yếu|The coffee is weak.
+clever|thông minh|She is a clever student.
+lazy|lười biếng|Don’t be lazy.
+noisy|ồn ào|The street is noisy.
+quiet|yên tĩnh|The library is quiet.
+dangerous|nguy hiểm|The road is dangerous.
+useful|hữu ích|This app is useful.`)
+addT("Cấp 2: Công nghệ & liên lạc",`computer|máy tính|I use a computer for study.
+smartphone|điện thoại thông minh|My smartphone is new.
+internet|mạng Internet|The internet is very fast.
+website|trang web|Visit our website.
+email|thư điện tử|I sent you an email.
+message|tin nhắn|Send me a message.
+video call|cuộc gọi video|We have a video call every night.
+screen|màn hình|The screen is too bright.
+keyboard|bàn phím|The keyboard is on the desk.
+camera|máy ảnh|Take a photo with the camera.
+charger|bộ sạc|I forgot my charger.
+online|trực tuyến|I study English online.`)
+addT("Cấp 2: Du lịch & kỳ nghỉ",`trip|chuyến đi|We had a nice trip.
+beach|bãi biển|We swam at the beach.
+hotel|khách sạn|The hotel is near the sea.
+tourist|khách du lịch|Many tourists visit Hue.
+map|bản đồ|Look at the map.
+backpack|ba lô|Pack your backpack.
+suitcase|va li|My suitcase is heavy.
+camp|trại, cắm trại|We camp near the lake.
+island|hòn đảo|The island is quiet.
+guide|hướng dẫn viên|The guide speaks English.
+adventure|cuộc phiêu lưu|It was a big adventure.
+view|cảnh quan|The view is amazing.`)
+addT("Cấp 2: Thứ, tháng & thời gian",`Monday|thứ Hai|We have English on Monday.
+Saturday|thứ Bảy|I play football on Saturday.
+Sunday|chủ nhật|We visit grandma on Sunday.
+January|tháng Giêng|Tet is in January or February.
+June|tháng Sáu|School ends in June.
+December|tháng Mười Hai|It is cold in December.
+weekend|cuối tuần|I relax at the weekend.
+morning|buổi sáng|I run in the morning.
+afternoon|buổi chiều|I study in the afternoon.
+evening|buổi tối|We eat dinner in the evening.
+midnight|nửa đêm|The show ends at midnight.
+calendar|lịch|Check the calendar.`)
+addT("Cấp 2: Mua sắm & tiền bạc",`price|giá|What is the price?
+cheap|rẻ|This bag is cheap.
+pay|trả tiền|I pay by card.
+change|tiền thừa, thay đổi|Keep the change.
+coin|đồng xu|I have a coin.
+wallet|ví tiền|My wallet is in my bag.
+customer|khách hàng|The customer is waiting.
+shop assistant|nhân viên bán hàng|The shop assistant is helpful.
+size|cỡ|What size do you wear?
+try on|mặc thử|Can I try on this shirt?
+sale|đợt giảm giá|There is a big sale today.
+save money|tiết kiệm tiền|I save money every month.`)
+addT("Kho vận & Logistics",`forklift|xe nâng|The forklift moves the pallets.
+inventory|hàng tồn kho|We count the inventory monthly.
+stock|hàng trong kho|We have enough stock.
+loading dock|khu bốc dỡ hàng|Park at the loading dock.
+dispatch|điều phối, gửi đi|We dispatch goods daily.
+delivery note|phiếu giao hàng|Sign the delivery note.
+tracking number|mã theo dõi|Send me the tracking number.
+courier|dịch vụ chuyển phát|The courier arrives at noon.
+last mile|chặng giao cuối|Last mile delivery is costly.
+cold chain|chuỗi lạnh|Fish needs the cold chain.
+stack|xếp chồng|Do not stack more than three boxes.
+lead time|thời gian chờ giao hàng|The lead time is two weeks.`)
+addT("Máy móc & thiết bị",`machine|máy móc|The machine is running.
+motor|động cơ điện|The motor makes a noise.
+switch|công tắc|Turn off the switch.
+cable|dây cáp|The cable is broken.
+plug|phích cắm|Plug it into the socket.
+spare part|phụ tùng thay thế|We need a spare part.
+maintenance|bảo trì|Maintenance is on Friday.
+adjust|điều chỉnh|Adjust the speed.
+install|lắp đặt|The technician will install it.
+manual|sách hướng dẫn|Read the manual first.
+overheat|quá nhiệt|The engine may overheat.
+malfunction|sự cố hỏng hóc|There was a malfunction.`)
+addT("Động từ thông dụng",`accept|chấp nhận|Please accept my apology.
+allow|cho phép|They allow visitors here.
+arrange|sắp xếp|I will arrange a meeting.
+avoid|tránh|Avoid mistakes.
+belong|thuộc về|This book belongs to me.
+choose|chọn|Choose one color.
+compare|so sánh|Compare the two prices.
+decide|quyết định|We decided to go.
+explain|giải thích|Please explain the rule.
+manage|quản lý, xoay xở|She manages the team.
+remember|nhớ|Remember your password.
+suggest|đề xuất|I suggest we start now.`)
+var GRAM=[
+ {t:"Thì hiện tại đơn (Present Simple)",rule:"S + V(s/es) — dùng cho thói quen, sự thật hiển nhiên. Ngôi he/she/it thêm -s/-es.",
+  eg:[["She works in a bank.","Cô ấy làm việc ở ngân hàng."],["I don’t drink coffee.","Tôi không uống cà phê."],["Does he live here?","Anh ấy sống ở đây phải không?"]]},
+ {t:"Thì hiện tại tiếp diễn (Present Continuous)",rule:"S + am/is/are + V-ing — hành động đang diễn ra lúc nói hoặc kế hoạch gần.",
+  eg:[["I am studying English now.","Tôi đang học tiếng Anh."],["They are waiting outside.","Họ đang đợi bên ngoài."],["We are leaving tomorrow.","Ngày mai chúng tôi đi."]]},
+ {t:"Thì quá khứ đơn (Past Simple)",rule:"S + V2/V-ed — hành động đã kết thúc trong quá khứ. Phủ định/nghi vấn dùng did + V nguyên mẫu.",
+  eg:[["I visited Hanoi last year.","Năm ngoái tôi đã thăm Hà Nội."],["He didn’t call me.","Anh ấy đã không gọi tôi."],["Did you see that movie?","Bạn đã xem phim đó chưa?"]]},
+ {t:"Thì tương lai: will và be going to",rule:"will: quyết định tức thời, dự đoán. be going to: kế hoạch đã định trước.",
+  eg:[["I will help you.","Tôi sẽ giúp bạn."],["I am going to study abroad.","Tôi định đi du học."],["It will rain tonight.","Tối nay trời sẽ mưa."]]},
+ {t:"Mạo từ a / an / the",rule:"a + phụ âm, an + nguyên âm (âm đọc), the: vật đã xác định hoặc duy nhất.",
+  eg:[["I need an umbrella.","Tôi cần một cái ô."],["She is a teacher.","Cô ấy là giáo viên."],["The sun is hot.","Mặt trời rất nóng."]]},
+ {t:"Giới từ thời gian: in / on / at",rule:"in + tháng, năm, mùa. on + ngày. at + giờ, thời điểm cụ thể.",
+  eg:[["I was born in 1998.","Tôi sinh năm 1998."],["See you on Monday.","Hẹn gặp thứ Hai."],["The class starts at 7.","Lớp bắt đầu lúc 7 giờ."]]},
+ {t:"Quá khứ tiếp diễn (Past Continuous)",rule:"S + was/were + V-ing — hành động đang diễn ra tại một thời điểm trong quá khứ, hoặc đang xảy ra thì bị hành động khác xen vào.",
+  eg:[["I was cooking when she called.","Tôi đang nấu ăn thì cô ấy gọi."],["They were sleeping at 10 p.m.","10 giờ tối họ đang ngủ."]]},
+ {t:"Hiện tại hoàn thành (Present Perfect)",rule:"S + have/has + V3 — hành động đã xảy ra, còn liên quan hiện tại; dùng với for, since, already, yet, ever.",
+  eg:[["I have lived here for five years.","Tôi đã sống ở đây 5 năm."],["Have you ever been to Japan?","Bạn từng đến Nhật chưa?"]]},
+ {t:"Quá khứ hoàn thành (Past Perfect)",rule:"S + had + V3 — hành động xảy ra trước một hành động khác trong quá khứ.",
+  eg:[["The train had left when I arrived.","Tàu đã rời đi khi tôi đến."],["She had finished before noon.","Cô ấy đã xong trước trưa."]]},
+ {t:"Tương lai hoàn thành & tiếp diễn",rule:"Will have + V3: sẽ hoàn thành trước mốc tương lai. Will be + V-ing: sẽ đang làm vào thời điểm tương lai.",
+  eg:[["I will have finished by Friday.","Tôi sẽ xong trước thứ Sáu."],["This time tomorrow I will be flying.","Giờ này mai tôi đang bay."]]},
+ {t:"Động từ khuyết thiếu (Modal verbs)",rule:"can/could: khả năng, xin phép. must/have to: bắt buộc. should: lời khuyên. may/might: có thể xảy ra. Sau modal luôn là V nguyên mẫu.",
+  eg:[["You should check the invoice.","Bạn nên kiểm tra hóa đơn."],["You must wear a helmet.","Bạn phải đội mũ bảo hiểm."],["It might rain later.","Có thể lát nữa trời mưa."]]},
+ {t:"Câu bị động (Passive Voice)",rule:"S + be + V3 (+ by agent) — nhấn mạnh đối tượng bị tác động. Giữ nguyên thì của be.",
+  eg:[["The goods were inspected yesterday.","Hàng đã được kiểm tra hôm qua."],["English is spoken worldwide.","Tiếng Anh được nói khắp thế giới."]]},
+ {t:"Câu điều kiện loại 0, 1, 2, 3",rule:"Loại 0: If + hiện tại, hiện tại (sự thật). Loại 1: If + hiện tại, will + V (có thể xảy ra). Loại 2: If + quá khứ, would + V (không có thật ở hiện tại). Loại 3: If + had + V3, would have + V3 (không có thật ở quá khứ).",
+  eg:[["If it rains, we will stay home.","Nếu trời mưa, ta sẽ ở nhà."],["If I were rich, I would travel.","Nếu giàu, tôi sẽ đi du lịch."],["If I had known, I would have helped.","Nếu biết, tôi đã giúp."]]},
+ {t:"So sánh (Comparison)",rule:"Hơn: adj-er / more + adj + than. Nhất: the adj-est / the most + adj. Bằng: as + adj + as. Bất quy tắc: good-better-best, bad-worse-worst.",
+  eg:[["This bag is cheaper than that one.","Cái túi này rẻ hơn cái kia."],["She is the most careful worker.","Cô ấy là người cẩn thận nhất."]]},
+ {t:"Mệnh đề quan hệ (who, which, that, whose)",rule:"who: chỉ người. which: chỉ vật. that: người hoặc vật. whose: sở hữu. where: nơi chốn. when: thời gian.",
+  eg:[["The man who called is my boss.","Người đàn ông gọi là sếp tôi."],["This is the factory where we work.","Đây là nhà máy nơi chúng tôi làm việc."]]},
+ {t:"Câu gián tiếp (Reported Speech)",rule:"Lùi thì: hiện tại → quá khứ, will → would, can → could. Đổi đại từ và trạng từ thời gian (today → that day).",
+  eg:[["She said she was tired.","Cô ấy nói cô ấy mệt."],["He asked if I could help.","Anh ấy hỏi tôi có giúp được không."]]},
+ {t:"Gerund (V-ing) và To-infinitive",rule:"enjoy, avoid, finish, mind + V-ing. want, decide, hope, plan + to V. like, start, begin dùng được cả hai.",
+  eg:[["I enjoy reading books.","Tôi thích đọc sách."],["She decided to leave.","Cô ấy quyết định đi."]]},
+ {t:"Danh từ đếm được / không đếm được & lượng từ",rule:"many/few + đếm được. much/little + không đếm được. a lot of/some/any dùng cho cả hai (any cho câu phủ định, nghi vấn).",
+  eg:[["How much water do you need?","Bạn cần bao nhiêu nước?"],["There aren’t many chairs.","Không có nhiều ghế."]]},
+ {t:"Câu hỏi: Wh-, Yes/No, câu hỏi đuôi",rule:"Wh-: what, where, when, why, who, how + trợ động từ + S. Câu hỏi đuôi: khẳng định → đuôi phủ định, và ngược lại.",
+  eg:[["Where do you work?","Bạn làm việc ở đâu?"],["You are tired, aren’t you?","Bạn mệt phải không?"]]},
+ {t:"Used to, Would, Wish",rule:"used to + V: thói quen trong quá khứ nay không còn. wish + quá khứ đơn: ước điều không có thật ở hiện tại.",
+  eg:[["I used to play football.","Tôi từng chơi bóng đá."],["I wish I had more time.","Ước gì tôi có nhiều thời gian hơn."]]},
+ {t:"Liên từ & từ nối (and, but, because, although...)",rule:"because + mệnh đề, because of + danh từ. although + mệnh đề (dù). however, therefore đứng đầu câu, sau có dấu phẩy.",
+  eg:[["Although it was late, we kept working.","Dù đã muộn, chúng tôi vẫn làm việc."],["He was late because of traffic.","Anh ấy trễ vì kẹt xe."]]},
+ {t:"Đại từ, tính từ sở hữu & đại từ phản thân",rule:"I–me–my–mine–myself; you–you–your–yours–yourself; he–him–his–his–himself; she–her–her–hers–herself; we–us–our–ours–ourselves; they–them–their–theirs–themselves.",m:"Học theo cột: chủ ngữ (làm), tân ngữ (bị làm), my + danh từ, mine đứng một mình, -self nghĩa là tự mình.",
+  eg:[["This is my phone. That one is yours.","Đây là điện thoại của tôi, cái kia của bạn."],["She taught herself English.","Cô ấy tự học tiếng Anh."]]},
+ {t:"Tính từ và trạng từ (Adjective vs Adverb)",rule:"Tính từ bổ nghĩa danh từ, đứng trước danh từ hoặc sau be. Trạng từ bổ nghĩa động từ/tính từ, thường thêm -ly: careful → carefully. Bất quy tắc: good → well, fast → fast, hard → hard.",m:"Hỏi “làm như thế nào?” → trạng từ. Hỏi “như thế nào (là gì)?” → tính từ. Nhớ “He is a good driver = He drives well”.",
+  eg:[["She is a careful worker.","Cô ấy là người làm việc cẩn thận."],["She works carefully.","Cô ấy làm việc một cách cẩn thận."]]},
+ {t:"Thứ tự tính từ (OpSASCOMP)",rule:"Opinion – Size – Age – Shape – Colour – Origin – Material – Purpose + danh từ. Ý kiến → kích cỡ → tuổi → hình dạng → màu → xuất xứ → chất liệu → mục đích.",m:"Nhớ theo thứ tự ví dụ: ĐẸP – TO – CŨ – TRÒN – ĐỎ – NHẬT – GỖ. Ý kiến (đẹp, tốt) luôn đứng đầu, chất liệu đứng sát danh từ.",
+  eg:[["a beautiful small old Japanese car","một chiếc xe Nhật nhỏ, cũ, đẹp"],["a big round wooden table","một cái bàn gỗ tròn lớn"]]},
+ {t:"Too / enough / so / such",rule:"too + adj: quá (tiêu cực). adj + enough: đủ. so + adj, such + (a/an) + adj + danh từ: quá, đến nỗi.",m:"“Too” = quá mức, không tốt. “Enough” đứng SAU tính từ nhưng TRƯỚC danh từ. So đi với tính từ, such đi với danh từ.",
+  eg:[["The box is too heavy to lift.","Thùng quá nặng để nhấc."],["He is old enough to drive.","Anh ấy đủ tuổi lái xe."],["It was such a good product.","Đó là một sản phẩm rất tốt."]]},
+ {t:"Both / either / neither & đồng tình (so, neither)",rule:"both A and B: cả hai. either A or B: một trong hai. neither A nor B: không cái nào. Đồng tình: So + trợ động từ + S (khẳng định), Neither + trợ động từ + S (phủ định).",m:"Neither đã mang nghĩa phủ định nên không thêm “not”. “Me too” = So do I; “Me neither” = Neither do I.",
+  eg:[["I like tea. So do I.","Tôi thích trà. Tôi cũng vậy."],["She can’t swim. Neither can he.","Cô ấy không biết bơi. Anh ấy cũng vậy."]]},
+ {t:"Thể nhờ vả: have / get something done",rule:"have + vật + V3: nhờ người khác làm. get + vật + V3: tương tự, thân mật hơn.",m:"Vật đứng giữa, V3 đứng cuối: have + [vật] + V3. Bạn không tự làm.",
+  eg:[["I had my car repaired.","Tôi nhờ sửa xe."],["We get our goods inspected.","Chúng tôi cho kiểm tra hàng."]]},
+ {t:"Giới từ nơi chốn & chuyển động",rule:"in (trong), on (trên bề mặt), at (tại điểm), under, between, next to; chuyển động: to, into, out of, through, across, along.",m:"Hình dung: in = hộp, on = mặt bàn, at = một điểm trên bản đồ. “Arrive in + thành phố, arrive at + nơi nhỏ”.",
+  eg:[["The documents are on the desk.","Tài liệu ở trên bàn."],["We arrived at the airport.","Chúng tôi đến sân bay."]]},
+ {t:"Cụm động từ thường gặp (Phrasal verbs)",rule:"check in/out (nhận/trả phòng), look for (tìm), pick up (đón), carry out (thực hiện), figure out (tìm ra), turn down (từ chối), set up (thiết lập), fill in (điền).",m:"Học cả cụm kèm một câu ví dụ, đừng dịch từng từ. Nhóm theo động từ gốc: look up, look for, look after.",
+  eg:[["We carried out the inspection.","Chúng tôi đã tiến hành kiểm tra."],["Please fill in this form.","Vui lòng điền vào mẫu này."]]},
+ {t:"Động từ bất quy tắc thường gặp",rule:"be–was/were–been; go–went–gone; do–did–done; have–had–had; see–saw–seen; take–took–taken; buy–bought–bought; send–sent–sent; find–found–found; break–broke–broken; write–wrote–written; give–gave–given.",m:"Học theo nhóm vần: buy-bought-bought, bring-brought-brought. Nhóm giống nhau 3 cột: send, find, have, make.",
+  eg:[["We have already sent the invoice.","Chúng tôi đã gửi hóa đơn."],["He broke the seal.","Anh ấy đã phá niêm phong."]]},
+ {t:"Phát âm đuôi -ed và -s/-es",rule:"-ed đọc /t/ sau âm vô thanh (worked), /d/ sau âm hữu thanh (played), /ɪd/ sau t, d (wanted). -s đọc /s/, /z/, /ɪz/ (sau s, z, ch, sh, x).",m:"Câu thần chú: “Khi Sang Chơi Xem Shop Phở” → đuôi k, s, ch, x, sh, p đọc /t/ (-ed) hoặc /s/ (-s).",
+  eg:[["worked /wɜːrkt/, played /pleɪd/, wanted /ˈwɒntɪd/","làm việc, chơi, muốn"],["boxes /ˈbɒksɪz/, books /bʊks/, bags /bæɡz/","các hộp, sách, túi"]]},
+ {t:"Câu mệnh lệnh, đề nghị & lịch sự",rule:"V nguyên mẫu (Open it). Don’t + V. Let’s + V. Why don’t we + V? Would you mind + V-ing? Could/Would you + V?",m:"Càng lịch sự thì câu càng dài: Open it → Could you open it? → Would you mind opening it?",
+  eg:[["Would you mind checking the label?","Bạn vui lòng kiểm tra nhãn giúp?"],["Let’s start the inspection.","Bắt đầu kiểm tra thôi."]]},
+ {t:"Hiện tại hoàn thành tiếp diễn",rule:"S + have/has + been + V-ing — hành động bắt đầu từ quá khứ và vẫn đang tiếp tục, nhấn mạnh quá trình.",m:"Có for/since + hành động còn kéo dài, hỏi “How long...?” → been + V-ing.",
+  eg:[["I have been waiting for an hour.","Tôi đã đợi một tiếng rồi."],["How long have you been working here?","Bạn làm ở đây bao lâu rồi?"]]},
+ {t:"Đảo ngữ (Inversion)",rule:"Đưa trợ động từ lên trước chủ ngữ sau trạng từ phủ định: Never, Rarely, Hardly, Not only, No sooner... than. Điều kiện: Should you..., Were I..., Had I...",m:"Trạng từ phủ định đứng đầu câu thì mượn trợ động từ ra trước. Never have I seen... (như câu hỏi).",
+  eg:[["Never have I seen such quality.","Tôi chưa từng thấy chất lượng như vậy."],["Had I known, I would have called.","Nếu biết, tôi đã gọi."]]},
+ {t:"Điều kiện hỗn hợp, wish & as if",rule:"Hỗn hợp: If + had + V3, would + V (quá khứ ảnh hưởng hiện tại). wish + had + V3: tiếc nuối quá khứ. as if + quá khứ đơn: như thể (không có thật).",m:"Wish lùi một thì: hiện tại → quá khứ đơn, quá khứ → had + V3. Tiếc nuối = lùi thì.",
+  eg:[["If I had studied, I would be a doctor now.","Nếu đã học, giờ tôi là bác sĩ."],["I wish I had checked the goods.","Giá mà tôi đã kiểm tra hàng."]]},
+ {t:"Rút gọn mệnh đề (V-ing / V3)",rule:"Mệnh đề quan hệ chủ động → V-ing; bị động → V3. Hai hành động cùng chủ ngữ: Having + V3, ... (xảy ra trước).",m:"Chủ động V-ing, bị động V3. Hỏi: danh từ trước đó tự làm hay bị làm?",
+  eg:[["The man standing there is my boss.","Người đứng đó là sếp tôi."],["Goods damaged in transit will be replaced.","Hàng bị hư trong vận chuyển sẽ được đổi."]]},
+ {t:"Giả định cách (Subjunctive)",rule:"suggest/insist/recommend/demand + that + S + (should) + V nguyên mẫu. It is important/essential that + S + V nguyên mẫu.",m:"Sau suggest that, động từ giữ nguyên mẫu, không chia -s. “suggest that he go”.",
+  eg:[["I suggest that he check the invoice.","Tôi đề nghị anh ấy kiểm tra hóa đơn."],["It is essential that we be on time.","Điều thiết yếu là chúng ta đúng giờ."]]},
+ {t:"Câu chẻ (Cleft sentences)",rule:"It is/was + phần nhấn mạnh + that/who + ... Dùng để nhấn mạnh chủ ngữ, tân ngữ hoặc trạng ngữ.",m:"Muốn nhấn mạnh gì thì đặt ngay sau “It is”.",
+  eg:[["It was the supplier who made the mistake.","Chính nhà cung cấp mắc lỗi."],["It is quality that matters.","Chính chất lượng mới quan trọng."]]},
+ {t:"Tính từ -ed và -ing",rule:"-ing mô tả đặc điểm của sự vật (interesting). -ed mô tả cảm xúc của người (interested).",m:"Người cảm thấy → -ed. Vật gây ra → -ing. I am bored; the film is boring.",
+  eg:[["The report is surprising.","Bản báo cáo gây ngạc nhiên."],["I am surprised by the result.","Tôi ngạc nhiên bởi kết quả."]]},
+ {t:"Đại từ bất định & some / any / no / every",rule:"some- (khẳng định), any- (phủ định, nghi vấn), no- (nghĩa phủ định), every-. Kết hợp: -one, -body, -thing, -where. Đi với động từ số ít.",m:"Câu đã phủ định thì dùng any, không dùng no (không nói “don’t have no”).",
+  eg:[["Everyone is here.","Mọi người đều có mặt."],["I didn’t find anything wrong.","Tôi không thấy gì sai."]]},
+ {t:"Sở hữu cách ’s và of",rule:"Người: danh từ + ’s (Hao’s car). Danh từ số nhiều có s: s’ (the workers’ room). Vật: the + danh từ + of + danh từ.",m:"Người dùng ’s, vật dùng of. “the color of the box”, “Hao’s box”.",
+  eg:[["This is my manager’s office.","Đây là văn phòng quản lý của tôi."],["The price of the goods is high.","Giá của hàng này cao."]]},
+ {t:"Danh từ số nhiều bất quy tắc & danh từ ghép",rule:"man–men, woman–women, child–children, person–people, foot–feet, tooth–teeth. Không đổi: sheep, fish. Danh từ ghép: danh từ + danh từ (a shipping cost). Chỉ danh từ chính có số nhiều.",m:"Nhớ nhóm “men-women-children-people”. Danh từ ghép chỉ cho “s” vào từ cuối: two shipping costs.",
+  eg:[["Three workers and two women inspected it.","Ba công nhân và hai phụ nữ kiểm tra."],["We need two bank accounts.","Chúng tôi cần hai tài khoản ngân hàng."]]},
+ {t:"Mệnh đề trạng ngữ (when, while, until, unless...)",rule:"when/while/as soon as/before/after/until + mệnh đề. Chỉ thời gian tương lai: dùng hiện tại đơn sau when/until. unless = if not.",m:"Tương lai không đi sau when/if/until: “I will call you when I arrive” (không dùng will arrive).",
+  eg:[["Call me when the goods arrive.","Gọi tôi khi hàng đến."],["We can’t ship unless you pay.","Chúng tôi không giao trừ khi bạn thanh toán."]]},
+ {t:"So sánh kép & so sánh bội",rule:"the + so sánh hơn, the + so sánh hơn: càng... càng. twice/three times as + adj + as: gấp 2/3 lần. more and more + adj: ngày càng.",m:"“The more, the better.” Hai vế đều bắt đầu bằng the + so sánh hơn.",
+  eg:[["The more you practice, the better you speak.","Càng luyện, bạn nói càng tốt."],["This box is twice as heavy as that one.","Thùng này nặng gấp đôi thùng kia."]]},
+ {t:"Make / let / have / get + người + V",rule:"make/let/have + O + V nguyên mẫu (không to). get + O + to V. Bị động make: be made to V.",m:"Make, let, have bỏ to. Get giữ to: I got him to check it.",
+  eg:[["The manager made us check every item.","Quản lý bắt chúng tôi kiểm từng món."],["I got him to sign the form.","Tôi nhờ anh ấy ký vào mẫu."]]},
+ {t:"Giới từ đi với tính từ & động từ",rule:"interested in, good at, afraid of, responsible for, depend on, apply for, agree with, wait for, pay for, look forward to + V-ing.",m:"Học cả cụm: responsible FOR, depend ON. Sau giới từ luôn là danh từ hoặc V-ing.",
+  eg:[["We depend on our suppliers.","Chúng tôi phụ thuộc nhà cung cấp."],["I look forward to meeting you.","Tôi mong được gặp bạn."]]},
+ {t:"There is / There are và It",rule:"There is + danh từ số ít/không đếm được. There are + danh từ số nhiều. There was/were: quá khứ. It dùng cho thời tiết, thời gian, khoảng cách: It is raining. It is 5 o’clock.",m:"There + be chia theo danh từ đứng ngay sau nó. “There is a box and two bags” → chia theo danh từ đầu (a box).",
+  eg:[["There are three defects in this batch.","Lô này có ba lỗi."],["It takes two days to clear customs.","Mất hai ngày để thông quan."]]},
+ {t:"Câu hỏi gián tiếp (Indirect questions)",rule:"Mở đầu lịch sự (Could you tell me..., Do you know...) + từ hỏi + chủ ngữ + động từ (không đảo, không do/does). Yes/No dùng if/whether.",m:"Câu hỏi nằm trong câu khác thì trở về trật tự câu thường. Where is it? → Do you know where it is?",
+  eg:[["Could you tell me where the warehouse is?","Bạn cho tôi biết kho ở đâu được không?"],["Do you know if the goods have arrived?","Bạn có biết hàng đã đến chưa?"]]},
+ {t:"Prefer, would rather, had better",rule:"prefer A to B / prefer V-ing to V-ing. would rather + V (than + V). had better + V: nên làm (nếu không sẽ có hậu quả).",m:"Cả would rather và had better đều theo sau bằng V nguyên mẫu, không có to.",
+  eg:[["I would rather pay by card.","Tôi thích trả bằng thẻ hơn."],["You had better check the label.","Bạn nên kiểm tra nhãn đi."]]},
+ {t:"Be used to / Get used to và Used to",rule:"used to + V: thói quen đã bỏ. be/get used to + V-ing/danh từ: quen với (đang hoặc đang dần quen).",m:"Có chữ BE/GET đứng trước used to thì theo sau là V-ing: I’m used to working late.",
+  eg:[["I’m used to working with foreign partners.","Tôi quen làm việc với đối tác nước ngoài."],["She is getting used to the new system.","Cô ấy đang dần quen hệ thống mới."]]},
+ {t:"Although, despite, in spite of",rule:"Although/Though/Even though + mệnh đề (S + V). Despite/In spite of + danh từ hoặc V-ing. However/Nevertheless: đứng đầu câu, có dấu phẩy.",m:"Despite và in spite of không đi với mệnh đề, muốn dùng thì thêm the fact that: Despite the fact that it rained...",
+  eg:[["Although the price is high, we will order.","Dù giá cao, chúng tôi vẫn đặt hàng."],["Despite the delay, the quality is good.","Dù chậm trễ, chất lượng vẫn tốt."]]},
+ {t:"Trạng từ chỉ tần suất & vị trí trạng từ",rule:"always > usually > often > sometimes > rarely > never. Đứng trước động từ thường, sau be và trợ động từ. Trạng từ cách thức đứng sau động từ hoặc tân ngữ.",m:"Công thức: be + trạng từ; trạng từ + động từ thường. She is always late. She always arrives late.",
+  eg:[["We usually inspect the goods on arrival.","Chúng tôi thường kiểm hàng khi hàng đến."],["He is never late.","Anh ấy không bao giờ trễ."]]},
+ {t:"Mục đích: to, in order to, so that",rule:"to / in order to / so as to + V: để (cùng chủ ngữ). so that + mệnh đề (can/could/will/would): để (khác chủ ngữ hoặc nhấn mạnh).",m:"Cùng người làm → to V. Khác người hoặc muốn thêm can/will → so that + S + V.",
+  eg:[["I called to confirm the order.","Tôi gọi để xác nhận đơn hàng."],["Send it today so that we can ship tomorrow.","Gửi hôm nay để mai chúng tôi giao."]]},
+ {t:"Cách đọc số, ngày tháng, tiền và đơn vị",rule:"2,500 = two thousand five hundred. 1/2 = a half; 3/4 = three quarters. Ngày: May 5th đọc May the fifth. Năm: 2026 = twenty twenty-six. Tiền: $19.99 = nineteen ninety-nine hoặc nineteen dollars ninety-nine. 5 kg = five kilograms.",m:"Bỏ chữ “and” khi đọc số lớn trong Mỹ: 250 = two hundred fifty. Số thứ tự thêm -th (fourth, tenth), trừ first, second, third.",
+  eg:[["The shipment weighs 1,200 kilograms.","Lô hàng nặng 1.200 kg."],["The deadline is October 15th.","Hạn chót là ngày 15 tháng 10."]]},
+ {t:"Cấu trúc thông dụng với It và V-ing",rule:"It takes + (người) + thời gian + to V. It’s worth + V-ing. It’s no use / There’s no point in + V-ing. It’s the first time + have/has + V3. Spend + thời gian/tiền + V-ing.",m:"Nhớ các cụm cố định: worth V-ing, no use V-ing, spend … V-ing, busy V-ing, can’t help V-ing.",
+  eg:[["It’s worth checking every carton.","Đáng để kiểm từng thùng."],["I spent two hours reviewing the contract.","Tôi mất hai giờ xem hợp đồng."]]},
+ {t:"Câu trả lời ngắn & câu hỏi phủ định",rule:"Yes, I do. / No, it isn’t. Câu hỏi phủ định: Isn’t it ready? → trả lời theo sự thật (Yes, it is / No, it isn’t). Phản hồi: Really? Me too. I see. Sure. Of course.",m:"Trả lời theo sự thật chứ không theo từ hỏi: Isn’t it ready? Chưa sẵn sàng → No, it isn’t.",
+  eg:[["Have you sent the file? Yes, I have.","Bạn gửi tệp chưa? Rồi."],["Isn’t he coming? No, he isn’t.","Anh ấy không đến à? Không."]]},
+ {t:"Viết email: trang trọng và thân mật",rule:"Trang trọng: Dear Mr./Ms. …, I am writing to…, Please find attached…, Yours sincerely. Thân mật: Hi …, Just a quick note…, Thanks, Best. Không dùng viết tắt (I’m, can’t) trong văn bản rất trang trọng.",m:"Mở bằng mục đích, kết bằng hành động tiếp theo: I am writing to… / I look forward to your reply.",
+  eg:[["I am writing to confirm our order.","Tôi viết để xác nhận đơn hàng của chúng ta."],["Please let me know if you need anything else.","Cần gì thêm xin báo cho tôi."]]},
+ {t:"Nâng cao: Cấu trúc song song (Parallelism)",rule:"Các thành phần nối bằng and, or, but, not only... but also, either... or phải cùng dạng ngữ pháp (cùng V-ing, cùng to V, cùng danh từ, cùng mệnh đề).",m:"Nhìn vào chữ AND: hai bên phải là cặp cùng loại. Sai: reading and to write. Đúng: reading and writing.",
+  eg:[["She enjoys reading, writing and traveling.","Cô ấy thích đọc, viết và du lịch."],["The product is not only cheap but also durable.","Sản phẩm không chỉ rẻ mà còn bền."]]},
+ {t:"Nâng cao: Mệnh đề nhượng bộ rút gọn",rule:"Cùng chủ ngữ thì rút gọn: Although (he was) tired, ... → Although tired, ... Còn: Whatever, However + adj + S + V, No matter how/what, Much as, Even if.",m:"Bỏ chủ ngữ và to be: Although tired, he kept working. However hard he tried, he failed.",
+  eg:[["Although tired, she finished the report.","Dù mệt, cô ấy vẫn hoàn thành báo cáo."],["However careful you are, mistakes happen.","Dù cẩn thận đến đâu, sai sót vẫn xảy ra."]]},
+ {t:"Nâng cao: Danh hóa (Nominalisation)",rule:"Biến động từ/tính từ thành danh từ để câu trang trọng: decide → decision, develop → development, important → importance, increase → an increase.",m:"Câu trang trọng thường nhiều danh từ hơn động từ: “People use more cars” → “The increased use of cars...”.",
+  eg:[["The development of trade has changed society.","Sự phát triển thương mại đã thay đổi xã hội."],["There has been a rapid increase in prices.","Giá cả tăng nhanh."]]},
+ {t:"Nâng cao: Modal perfect (should have, must have...)",rule:"should have + V3: lẽ ra nên (nhưng đã không). must have + V3: chắc hẳn đã. might/could have + V3: có thể đã. can’t have + V3: chắc chắn không phải đã. needn’t have + V3: không cần phải (mà đã làm).",m:"Modal + have + V3 = nói về quá khứ. Should have = tiếc nuối, must have = suy đoán chắc chắn.",
+  eg:[["You should have checked the label.","Lẽ ra bạn nên kiểm tra nhãn."],["He must have forgotten the meeting.","Chắc anh ấy đã quên cuộc họp."]]},
+ {t:"Nâng cao: Bị động đặc biệt (It is said that...)",rule:"It is said/believed/reported that + mệnh đề. S + is said + to V / to have + V3. Bị động có tác nhân: be + V3 + by. Get-passive: He got fired.",m:"Hai cách: It is said that he is rich = He is said to be rich. Hành động xảy ra trước dùng to have + V3.",
+  eg:[["The goods are said to have been damaged.","Hàng được cho là đã bị hư."],["It is reported that sales have dropped.","Có báo cáo rằng doanh số đã giảm."]]},
+ {t:"Nâng cao: Mệnh đề quan hệ phức tạp",rule:"whom (tân ngữ chỉ người), giới từ + which/whom (the company for which I work), which bổ nghĩa cả mệnh đề (He passed, which surprised us), whose, mệnh đề quan hệ có dấu phẩy chỉ thông tin thêm.",m:"Giới từ đứng trước thì chỉ dùng which/whom (không dùng that). Có dấu phẩy thì không dùng that.",
+  eg:[["The supplier with whom we signed is reliable.","Nhà cung cấp mà chúng tôi ký là đáng tin."],["He arrived late, which annoyed everyone.","Anh ấy đến trễ, điều này làm mọi người khó chịu."]]},
+ {t:"Nâng cao: Liên từ điều kiện mở rộng",rule:"provided/providing that, as long as, on condition that: miễn là. unless: trừ khi. otherwise: nếu không thì. but for + N: nếu không có. supposing: giả sử. in case: phòng khi.",m:"Unless = if not, không dùng phủ định thêm lần nữa. In case = phòng khi (chưa xảy ra), if = nếu xảy ra.",
+  eg:[["We will ship provided that you pay today.","Chúng tôi sẽ giao với điều kiện bạn trả hôm nay."],["Take an umbrella in case it rains.","Mang ô phòng khi trời mưa."]]},
+ {t:"Nâng cao: Động từ tri giác & nhận biết",rule:"see/hear/watch/notice + O + V: thấy toàn bộ hành động. + O + V-ing: thấy đang diễn ra. Have/let/make + O + V. Hope/expect + to V; suggest + V-ing.",m:"V = thấy từ đầu đến cuối, V-ing = thấy một phần đang diễn ra. I saw him cross the road / crossing the road.",
+  eg:[["I heard her singing in the kitchen.","Tôi nghe cô ấy đang hát trong bếp."],["We watched them unload the container.","Chúng tôi xem họ dỡ container."]]},
+ {t:"Nâng cao: Mệnh đề danh từ (Noun clauses)",rule:"that, what, whether/if, who, where, how + mệnh đề, đóng vai trò chủ ngữ, tân ngữ hoặc bổ ngữ. What he said was true. I wonder whether it is ready.",m:"Mệnh đề danh từ dùng trật tự câu thường (không đảo). Chủ ngữ là mệnh đề thì chia động từ số ít.",
+  eg:[["What matters is the quality.","Điều quan trọng là chất lượng."],["I don’t know whether the order has arrived.","Tôi không biết đơn hàng đã đến chưa."]]},
+ {t:"Nâng cao: Cấu trúc nhấn mạnh",rule:"so + adj + that, such + (a) adj + N + that, not only... but also (đảo ngữ), What + S + V + is..., It is... that. Phó từ nhấn mạnh: indeed, in fact, certainly.",m:"So đi với tính từ, such đi với danh từ. Not only đứng đầu thì đảo trợ động từ: Not only did he apologize...",
+  eg:[["The box was so heavy that nobody could lift it.","Thùng nặng đến nỗi không ai nhấc nổi."],["It was such a good deal that we signed at once.","Đó là thỏa thuận tốt đến mức chúng tôi ký ngay."]]},
+ {t:"Nâng cao: Văn phong trang trọng & hedging",rule:"Thay từ thông tục bằng từ trang trọng: get → obtain, ask for → request, enough → sufficient, show → demonstrate. Dùng hedging: may, might, tend to, appear to, it is likely that.",m:"Trang trọng = khách quan + thận trọng. Thay “Everyone knows” bằng “It is widely believed that”.",
+  eg:[["It is widely believed that quality comes first.","Nhiều người tin chất lượng là trên hết."],["This may lead to higher costs.","Điều này có thể dẫn đến chi phí cao hơn."]]}
+];
+var TIPS=[
+ "Ngôi he/she/it thêm -s. Phủ định/nghi vấn: do/does + V, không thêm -s lần nữa.",
+ "Dấu hiệu: now, at the moment, Look!, Listen! Công thức: am/is/are + V-ing.",
+ "Dấu hiệu: yesterday, last…, ago. Câu hỏi/phủ định dùng did + V nguyên mẫu, không chia -ed hai lần.",
+ "Will = quyết định ngay lúc nói. Going to = đã có kế hoạch hoặc có dấu hiệu rõ ràng.",
+ "An đi với ÂM nguyên âm (an hour, a university). Nói về thứ đã biết, duy nhất → the.",
+ "AT điểm giờ, ON ngày, IN dài hơn (tháng, năm). Nhớ “Giờ AT, Ngày ON, Tháng Năm IN”.",
+ "Công thức “đang… thì”: when + quá khứ đơn cắt ngang quá khứ tiếp diễn.",
+ "Từ khóa: for + khoảng thời gian, since + mốc thời gian, already, yet, ever, never.",
+ "Có hai hành động quá khứ: cái nào xảy ra TRƯỚC dùng had + V3, cái sau dùng quá khứ đơn.",
+ "Từ khóa: by + mốc thời gian tương lai (by Friday) → will have + V3.",
+ "Sau modal KHÔNG thêm to, không thêm -s. Nhớ: must (nội tại), have to (do bên ngoài).",
+ "Bị động = be + V3. Chỉ cần đổi be theo thì của câu. Hàng được kiểm tra → be inspected.",
+ "Nhớ “0-1-2-3”: 0 thói quen, 1 có thể xảy ra, 2 giả sử hiện tại (were), 3 tiếc nuối quá khứ (had + V3).",
+ "Tính từ ngắn: -er / -est. Tính từ dài (từ 3 âm tiết): more / most. So sánh hơn luôn đi với than.",
+ "Who thay người, which thay vật, whose thay sở hữu. Có dấu phẩy thì không dùng that.",
+ "Lùi một thì: am/is → was, will → would, can → could. Nhớ đổi cả đại từ.",
+ "Nhóm V-ing: enjoy, avoid, finish, mind, keep. Nhóm to V: want, hope, decide, plan, need.",
+ "Đếm được: many, few. Không đếm được: much, little. Câu khẳng định thường dùng a lot of.",
+ "Câu hỏi đuôi: câu chính khẳng định → đuôi phủ định. Đuôi dùng cùng trợ động từ với câu chính.",
+ "Used to + V: ngày xưa hay làm. Be used to + V-ing: quen với (khác nghĩa, dễ nhầm).",
+ "Because + mệnh đề, because of + danh từ. Although và but không dùng cùng lúc trong một câu."
+];
+var GQ=[
+ ["She ___ to school every day.",["go","goes","going","went"],1,"Ngôi she dùng goes ở hiện tại đơn."],
+ ["They ___ football right now.",["play","plays","are playing","played"],2,"“Right now” → hiện tại tiếp diễn: are playing."],
+ ["I ___ a movie yesterday.",["see","saw","seen","will see"],1,"“Yesterday” → quá khứ đơn: saw."],
+ ["Look at the clouds! It ___ rain.",["will","is going to","did","does"],1,"Có dấu hiệu ở hiện tại → be going to."],
+ ["I need ___ umbrella.",["a","an","the","(không cần)"],1,"Umbrella bắt đầu bằng nguyên âm → an."],
+ ["The meeting is ___ Monday.",["in","at","on","by"],2,"Thứ trong tuần dùng on."],
+ ["He ___ like spicy food.",["don’t","doesn’t","isn’t","not"],1,"Ngôi he phủ định: doesn’t + V."],
+ ["___ you finish the report last night?",["Do","Are","Did","Have"],2,"“Last night” → quá khứ: Did."],
+ ["I ___ here since 2020.",["live","lived","have lived","am living"],2,"Since + mốc thời gian → hiện tại hoàn thành."],
+ ["The goods ___ yesterday.",["inspected","were inspected","inspect","are inspecting"],1,"Hàng bị tác động → bị động: were inspected."],
+ ["If I ___ rich, I would travel.",["am","was","were","will be"],2,"Điều kiện loại 2 dùng were cho mọi ngôi."],
+ ["You ___ see a doctor. You look sick.",["must to","should","can to","would"],1,"Lời khuyên → should + V."],
+ ["This is the man ___ called you.",["which","who","whose","where"],1,"Thay cho người, làm chủ ngữ → who."],
+ ["She is ___ than her sister.",["tall","taller","tallest","more tall"],1,"Tính từ ngắn so sánh hơn: tall-er."],
+ ["He said he ___ tired.",["is","was","will be","has been"],1,"Câu gián tiếp lùi thì: is → was."],
+ ["I enjoy ___ English.",["to study","studying","study","studied"],1,"Enjoy + V-ing."],
+ ["How ___ water do you need?",["many","much","few","a few"],1,"Water không đếm được → much."],
+ ["When I arrived, the train ___.",["left","has left","had left","leaves"],2,"Xảy ra trước một hành động quá khứ → quá khứ hoàn thành."],
+ ["She works ___.",["careful","carefully","care","more careful"],1,"Bổ nghĩa động từ → trạng từ carefully."],
+ ["The box is ___ heavy to lift.",["enough","so","too","such"],2,"Too + adj + to V: quá… không thể."],
+ ["I ___ my car repaired yesterday.",["had","did","made","was"],0,"Thể nhờ vả: have + vật + V3."],
+ ["I like coffee. ___ do I.",["Neither","So","Too","Also"],1,"Đồng tình khẳng định: So + trợ động từ + S."],
+ ["She can’t cook. ___ can he.",["So","Neither","Too","Either"],1,"Đồng tình phủ định: Neither + trợ động từ + S."],
+ ["Would you mind ___ the window?",["close","to close","closing","closed"],2,"Would you mind + V-ing."],
+ ["a ___ car (nhỏ, cũ, đẹp)",["small old beautiful","beautiful small old","old beautiful small","beautiful old small"],1,"Thứ tự: ý kiến → kích cỡ → tuổi."],
+ ["We ___ out the inspection last week.",["carried","carry","carrying","carries"],0,"Last week → quá khứ: carried out."],
+ ["I have been ___ for an hour.",["wait","waiting","waited","to wait"],1,"Have been + V-ing."],
+ ["Never ___ I seen such quality.",["did","have","do","am"],1,"Đảo ngữ với Never: Never have I seen."],
+ ["I suggest that he ___ the invoice.",["checks","checked","check","checking"],2,"Giả định cách: that + S + V nguyên mẫu."],
+ ["I am ___ by the news.",["surprising","surprised","surprise","surprises"],1,"Cảm xúc của người → -ed."],
+ ["The manager made us ___ every item.",["to check","checking","check","checked"],2,"Make + O + V không to."],
+ ["I will call you when I ___.",["will arrive","arrive","arrived","am arriving"],1,"Sau when chỉ tương lai dùng hiện tại đơn."],
+ ["I wish I ___ the goods earlier.",["checked","had checked","check","will check"],1,"Wish quá khứ: had + V3."],
+ ["The more you practice, ___ you speak.",["the better","better","best","the best"],0,"So sánh kép: the + so sánh hơn."],
+ ["Could you tell me where the warehouse ___?",["is","does","is it","it is"],0,"Câu hỏi gián tiếp giữ trật tự thường: where the warehouse is."],
+ ["I would rather ___ by card.",["to pay","paying","pay","paid"],2,"Would rather + V nguyên mẫu."],
+ ["___ the delay, the quality is good.",["Although","Despite","However","Because"],1,"Despite + danh từ."],
+ ["I’m used to ___ late.",["work","working","worked","works"],1,"Be used to + V-ing."],
+ ["We called ___ confirm the order.",["so","for","to","that"],2,"Mục đích cùng chủ ngữ: to + V."],
+ ["There ___ three defects in this batch.",["is","are","has","was being"],1,"Danh từ số nhiều → There are."],
+ ["She enjoys reading, writing and ___.",["travel","to travel","traveling","traveled"],2,"Song song: cùng dạng V-ing."],
+ ["The product is not only cheap but also ___.",["durably","durable","durability","to last"],1,"Song song: cùng tính từ."],
+ ["___ tired, she finished the report.",["Although","Despite","Because","But"],0,"Rút gọn nhượng bộ: Although + adj."],
+ ["You ___ checked the label.",["should have","should","must","may be"],0,"Lẽ ra nên làm: should have + V3."],
+ ["The goods are said ___ damaged.",["to be","being","to have been","have been"],2,"Xảy ra trước: to have been + V3."],
+ ["The supplier with ___ we signed is reliable.",["who","whom","that","which"],1,"Giới từ + whom (người)."],
+ ["We will ship ___ you pay today.",["unless","provided that","in case","although"],1,"Điều kiện: provided that."],
+ ["The box was ___ heavy that nobody could lift it.",["such","so","too","very"],1,"So + adj + that."]
+];
+var TALK=[
+ {t:"Làm quen",p:[["Nice to meet you. I’m Linh.","Rất vui được gặp bạn. Mình là Linh."],["Where are you from?","Bạn đến từ đâu?"],["I’m from Vietnam. How about you?","Mình đến từ Việt Nam. Còn bạn?"],["What do you do for a living?","Bạn làm nghề gì?"]]},
+ {t:"Nhà hàng",p:[["Could I see the menu, please?","Cho tôi xem thực đơn được không?"],["I’d like the chicken soup.","Tôi muốn món súp gà."],["Could we have the bill, please?","Cho chúng tôi thanh toán nhé."],["Is service included?","Đã gồm phí phục vụ chưa?"]]},
+ {t:"Hỏi đường",p:[["Excuse me, how do I get to the station?","Xin lỗi, đến nhà ga đi thế nào?"],["Go straight and turn left.","Đi thẳng rồi rẽ trái."],["Is it far from here?","Chỗ đó có xa đây không?"],["Thanks a lot for your help.","Cảm ơn bạn đã giúp."]]},
+ {t:"Công việc",p:[["Could you send me the file?","Bạn gửi giúp tôi tệp đó được không?"],["I’ll get back to you by Friday.","Tôi sẽ phản hồi trước thứ Sáu."],["Sorry, could you repeat that?","Xin lỗi, bạn nhắc lại được không?"],["Let’s schedule a meeting.","Mình hẹn một buổi họp nhé."]]},
+ {t:"Kiểm tra hàng",p:[["Please open this carton for inspection.","Vui lòng mở thùng này để kiểm tra."],["The quantity doesn’t match the packing list.","Số lượng không khớp với phiếu đóng gói."],["We found some damaged items in this batch.","Chúng tôi thấy vài món hư hỏng trong lô này."],["Could you send the quality certificate?","Bạn gửi giấy chứng nhận chất lượng được không?"],["We will have to reject this shipment.","Chúng tôi buộc phải từ chối lô hàng này."]]},
+ {t:"Đàm phán",p:[["Could you offer a better price?","Bạn giảm giá thêm được không?"],["What are your payment terms?","Điều khoản thanh toán của bạn là gì?"],["We can order in bulk if you give a discount.","Chúng tôi sẽ đặt số lượng lớn nếu có chiết khấu."],["Let me check and get back to you.","Để tôi kiểm tra rồi phản hồi bạn."]]},
+ {t:"Sân bay",p:[["Where is the check-in counter?","Quầy làm thủ tục ở đâu?"],["I’d like a window seat, please.","Tôi muốn ngồi cạnh cửa sổ."],["Is my flight delayed?","Chuyến bay của tôi có bị hoãn không?"],["I have nothing to declare.","Tôi không có gì phải khai báo."]]},
+ {t:"Khách sạn",p:[["I have a reservation under Hao.","Tôi có đặt phòng tên Hảo."],["What time is check-out?","Mấy giờ trả phòng?"],["The air conditioner isn’t working.","Máy lạnh không hoạt động."],["Could I have a late check-out?","Cho tôi trả phòng muộn được không?"]]},
+ {t:"Mua sắm",p:[["How much is this?","Cái này giá bao nhiêu?"],["Do you have a smaller size?","Bạn có size nhỏ hơn không?"],["Can I pay by card?","Tôi trả bằng thẻ được không?"],["I’d like to return this item.","Tôi muốn trả lại món này."]]},
+ {t:"Bác sĩ",p:[["I’ve had a fever since yesterday.","Tôi sốt từ hôm qua."],["Where does it hurt?","Bạn đau ở đâu?"],["Take this medicine twice a day.","Uống thuốc này ngày hai lần."],["I’m allergic to penicillin.","Tôi dị ứng penicillin."]]},
+ {t:"Điện thoại & Email",p:[["May I speak to Mr. Smith, please?","Cho tôi nói chuyện với ông Smith."],["I’m calling about my order.","Tôi gọi về đơn hàng của tôi."],["I look forward to hearing from you.","Mong sớm nhận phản hồi của bạn."],["Please find the attachment below.","Vui lòng xem tệp đính kèm bên dưới."]]},
+ {t:"Phỏng vấn",p:[["Tell me about yourself.","Hãy giới thiệu về bản thân."],["My greatest strength is teamwork.","Điểm mạnh nhất của tôi là làm việc nhóm."],["Why do you want this job?","Vì sao bạn muốn công việc này?"],["Do you have any questions for us?","Bạn có câu hỏi nào cho chúng tôi không?"]]},
+ {t:"Kiểm hàng tại kho",p:[["Please check the seal before opening.","Vui lòng kiểm tra niêm phong trước khi mở."],["Count the cartons against the delivery note.","Đếm số thùng đối chiếu với phiếu giao hàng."],["Take photos of any damage.","Chụp ảnh mọi chỗ hư hỏng."],["Is the batch number on the label correct?","Số lô trên nhãn có đúng không?"],["Move the rejected items to the quarantine area.","Chuyển hàng bị loại sang khu cách ly."]]},
+ {t:"Khiếu nại nhà cung cấp",p:[["We received the goods, but 5 percent are defective.","Chúng tôi nhận hàng nhưng 5 phần trăm bị lỗi."],["The products do not match the sample.","Sản phẩm không giống hàng mẫu."],["We request a replacement or a refund.","Chúng tôi yêu cầu đổi hàng hoặc hoàn tiền."],["Please send us your corrective action plan.","Vui lòng gửi kế hoạch khắc phục của bạn."],["We attach photos and the inspection report.","Chúng tôi đính kèm ảnh và biên bản kiểm tra."]]},
+ {t:"Báo cáo chất lượng",p:[["The inspection result is pass.","Kết quả kiểm tra là đạt."],["We inspected 200 pieces and found 3 defects.","Chúng tôi kiểm 200 cái và thấy 3 lỗi."],["The defect rate is within the AQL limit.","Tỷ lệ lỗi nằm trong giới hạn AQL."],["The goods are released for sale.","Hàng được cho phép đưa vào bán."]]},
+ {t:"Hợp đồng",p:[["Please review clause 8 about delivery.","Vui lòng xem điều khoản 8 về giao hàng."],["Which law governs this contract?","Hợp đồng này theo luật nào?"],["Any dispute will go to arbitration.","Mọi tranh chấp sẽ đưa ra trọng tài."],["We would like to amend the payment terms.","Chúng tôi muốn sửa điều khoản thanh toán."],["This is a force majeure event.","Đây là sự kiện bất khả kháng."]]},
+ {t:"Thanh toán L/C",p:[["Please open an irrevocable L/C at sight.","Vui lòng mở L/C không hủy ngang trả ngay."],["The documents have a discrepancy.","Bộ chứng từ có sai lệch."],["The L/C expires on 30 June.","L/C hết hạn vào ngày 30/6."],["We prefer T/T with 30 percent in advance.","Chúng tôi muốn T/T, trả trước 30 phần trăm."]]},
+ {t:"Incoterms",p:[["Is the price FOB or CIF?","Giá là FOB hay CIF?"],["Under FOB, risk passes when goods are on board.","Theo FOB, rủi ro chuyển khi hàng lên tàu."],["Who pays for insurance under CIF?","Ai trả bảo hiểm theo CIF?"],["We prefer DAP to our warehouse.","Chúng tôi muốn DAP đến kho của chúng tôi."]]},
+ {t:"Nhắn tin & chat",p:[["Hey, are you free to chat?","Này, bạn rảnh nói chuyện không?"],["I’m running late. Be there in 10.","Mình đang trễ. 10 phút nữa tới."],["Sounds good. Let’s do it.","Nghe ổn đấy. Làm vậy nhé."],["Can you send me the link?","Bạn gửi mình đường link nhé?"],["No worries, take your time.","Không sao, cứ từ từ."],["Thanks, that really helps!","Cảm ơn, giúp mình nhiều lắm!"]]},
+ {t:"Họp online",p:[["Can everyone hear me okay?","Mọi người nghe rõ không?"],["You’re on mute.","Bạn đang tắt tiếng."],["Let me share my screen.","Để mình chia sẻ màn hình."],["Sorry, you’re breaking up. Could you repeat that?","Xin lỗi, âm thanh bị ngắt. Bạn nhắc lại được không?"],["I’ll send a recap after the call.","Mình sẽ gửi tóm tắt sau cuộc họp."]]},
+ {t:"Mua sắm online",p:[["Is this item still in stock?","Món này còn hàng không?"],["What’s the estimated delivery time?","Dự kiến bao lâu thì giao?"],["Can I get free shipping?","Mình được miễn phí vận chuyển không?"],["My order hasn’t arrived yet.","Đơn hàng của mình chưa đến."],["I’d like to start a return.","Mình muốn bắt đầu trả hàng."]]},
+ {t:"Gọi xe & di chuyển",p:[["I’ll be at the pickup point in two minutes.","Hai phút nữa mình đến điểm đón."],["Could you take the fastest route?","Bạn đi đường nhanh nhất giúp được không?"],["You can drop me off here.","Bạn thả mình ở đây được rồi."],["How long is the ride?","Chuyến đi mất bao lâu?"],["Could you turn on the AC, please?","Bật điều hòa giúp mình nhé?"]]},
+ {t:"Quán cà phê & đồ ăn nhanh",p:[["Can I get a medium latte to go?","Cho mình một latte cỡ vừa mang đi."],["No sugar, please.","Không đường nhé."],["Is there a student discount?","Có giảm giá cho sinh viên không?"],["Could I get that without ice?","Cho mình món đó không đá được không?"],["It’s on me.","Để mình trả."]]},
+ {t:"Xã giao hằng ngày",p:[["How’s it going?","Dạo này thế nào?"],["Long time no see! Let’s catch up.","Lâu quá không gặp! Gặp nhau nói chuyện nhé."],["What do you do in your free time?","Rảnh bạn làm gì?"],["I’ll keep you posted.","Mình sẽ cập nhật cho bạn."],["Can I take a rain check?","Mình hẹn dịp khác được không?"]]},
+ {t:"Làm việc từ xa",p:[["I’m working remotely today.","Hôm nay mình làm việc từ xa."],["Could we reschedule to tomorrow morning?","Mình dời sang sáng mai được không?"],["I’ll loop you in on the email thread.","Mình sẽ thêm bạn vào chuỗi email."],["Let’s circle back on this next week.","Tuần sau mình bàn lại việc này nhé."],["Please keep me in the loop.","Nhớ cập nhật cho mình nhé."]]},
+ {t:"Khẩn cấp",p:[["I need help. Please call an ambulance.","Tôi cần giúp. Hãy gọi xe cấp cứu."],["I’ve lost my passport.","Tôi làm mất hộ chiếu."],["My phone was stolen.","Điện thoại tôi bị trộm."],["Where is the nearest hospital?","Bệnh viện gần nhất ở đâu?"],["Could you please speak more slowly?","Bạn nói chậm hơn được không?"]]},
+ {t:"Thuê nhà",p:[["Is the apartment still available?","Căn hộ còn trống không?"],["How much is the monthly rent?","Tiền thuê mỗi tháng là bao nhiêu?"],["Are utilities included?","Đã bao gồm điện nước chưa?"],["How much is the deposit?","Tiền đặt cọc là bao nhiêu?"],["When can I move in?","Khi nào tôi dọn vào được?"]]},
+ {t:"Ngân hàng",p:[["I’d like to open a savings account.","Tôi muốn mở tài khoản tiết kiệm."],["What’s the interest rate?","Lãi suất là bao nhiêu?"],["I’d like to transfer money abroad.","Tôi muốn chuyển tiền ra nước ngoài."],["My card was declined.","Thẻ của tôi bị từ chối."],["Could I get a statement for last month?","Cho tôi sao kê tháng trước được không?"]]},
+ {t:"Gửi bưu kiện",p:[["I’d like to send this parcel to Japan.","Tôi muốn gửi kiện hàng này sang Nhật."],["How long will it take to arrive?","Mất bao lâu thì đến?"],["Do you offer express shipping?","Bên bạn có giao nhanh không?"],["Can I track my package online?","Tôi theo dõi gói hàng online được không?"],["The package arrived damaged.","Gói hàng đến bị hư."]]},
+ {t:"Sửa chữa & bảo hành",p:[["My laptop won’t turn on.","Laptop của tôi không bật lên."],["Is it still under warranty?","Còn bảo hành không?"],["How much will the repair cost?","Sửa hết bao nhiêu tiền?"],["How long will it take to fix?","Sửa mất bao lâu?"],["Could you give me a written estimate?","Cho tôi bảng báo giá bằng văn bản được không?"]]},
+ {t:"Siêu thị",p:[["Where can I find the dairy section?","Quầy sữa và chế phẩm ở đâu?"],["Do you have this in a larger size?","Có cỡ lớn hơn không?"],["Is this on sale?","Món này đang giảm giá à?"],["Could I get a bag, please?","Cho mình một cái túi nhé."],["Could you scan my loyalty card?","Bạn quét thẻ thành viên giúp mình."]]},
+ {t:"Tại trường học",p:[["Could you explain that again, please?","Thầy/cô giải thích lại giúp em được không?"],["When is the assignment due?","Bài tập hạn nộp khi nào?"],["May I ask a question?","Em hỏi một câu được không?"],["I’m sorry, I missed the last class.","Xin lỗi, em vắng buổi học trước."],["Could you recommend some reading materials?","Thầy/cô gợi ý tài liệu đọc giúp em."]]},
+ {t:"Đồng nghiệp mới",p:[["I’m new here. Could you show me around?","Mình mới đến. Bạn dẫn mình đi tham quan nhé?"],["Who should I talk to about this?","Mình nên hỏi ai về việc này?"],["Would you like to grab lunch together?","Cùng đi ăn trưa nhé?"],["Thanks for your help. I really appreciate it.","Cảm ơn bạn đã giúp. Mình rất biết ơn."],["Let me know if I can help with anything.","Cần gì cứ nói mình."]]},
+ {t:"Xin lỗi & từ chối lịch sự",p:[["I’m so sorry for the inconvenience.","Xin lỗi vì sự bất tiện."],["Unfortunately, I won’t be able to make it.","Rất tiếc mình không thể tham dự."],["Thanks for the offer, but I’ll have to pass.","Cảm ơn lời mời, nhưng mình xin phép từ chối."],["I appreciate it, but I’m afraid I can’t.","Mình cảm kích nhưng e là không được."],["Could we try another time?","Mình thử dịp khác nhé?"]]}
+];
+
+/* ---------- TRẠNG THÁI ---------- */
+var S={xp:0,streak:0,last:"",known:{}};
+try{var raw=localStorage.getItem("ec_state");if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem("ec_state",JSON.stringify(S));}catch(e){}}
+function today(){return new Date().toISOString().slice(0,10)}
+function touchDay(){var t=today();if(S.last!==t){var y=new Date(Date.now()-864e5).toISOString().slice(0,10);S.streak=(S.last===y)?S.streak+1:1;S.last=t;save();}}
+function addXP(n){S.xp+=n;touchDay();save();hud();}
+function hud(){document.getElementById("xp").textContent=S.xp;document.getElementById("st").textContent=S.streak;}
+function $(id){return document.getElementById(id)}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+
+/* ---------- PHÁT ÂM ---------- */
+function speak(text,rate){
+  try{
+    if(!window.speechSynthesis){alert("Thiết bị chưa hỗ trợ phát âm. Hãy bật Text-to-Speech trong cài đặt Android.");return;}
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate||0.9;speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ---------- TỪ VỰNG ---------- */
+var vTopic=Object.keys(VOCAB)[0],vList=[],vi=0,flipped=false;
+function vocab(){
+  var topics=Object.keys(VOCAB);
+  var h='<div class="chips">'+topics.map(function(t){return '<button class="chip'+(t===vTopic?' on':'')+'" data-topic="'+esc(t)+'">'+t+'</button>'}).join("")+'</div>';
+  if(!vList.length){vList=VOCAB[vTopic];vi=0;flipped=false;}
+  var w=vList[vi],known=Object.keys(VOCAB[vTopic]).filter(function(k){return S.known[VOCAB[vTopic][k][0]]}).length;
+  h+='<div class="hint">Đã thuộc '+known+'/'+VOCAB[vTopic].length+' từ · Thẻ '+(vi+1)+'/'+vList.length+'</div>';
+  h+='<div class="bar"><i style="width:'+(known/VOCAB[vTopic].length*100)+'%"></i></div>';
+  h+='<div class="card fc" id="fc">';
+  if(!flipped){h+='<div class="en">'+w[0]+'</div><div class="ipa">'+w[1]+'</div><div class="hint">Chạm để xem nghĩa</div>';}
+  else{h+='<div class="vi">'+w[2]+'</div><div class="ex">“'+w[3]+'”</div>';}
+  h+='</div>';
+  h+='<div class="row" style="margin-bottom:12px"><button class="spk" id="s1" title="Nghe từ">Nghe</button><button class="btn alt" id="s2">Nghe câu ví dụ</button></div>';
+  h+='<div class="row"><button class="btn no" id="vno">Chưa nhớ</button><button class="btn ok" id="vyes">Đã nhớ +5</button></div>';
+  $("main").innerHTML='<h2>Học từ vựng</h2>'+h;
+  document.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){vTopic=b.dataset.topic;vList=[];vocab();}});
+  $("fc").onclick=function(){flipped=!flipped;vocab();};
+  $("s1").onclick=function(){speak(w[0],.8)};
+  $("s2").onclick=function(){speak(w[3])};
+  function nextCard(){vi=(vi+1)%vList.length;flipped=false;vocab();}
+  $("vno").onclick=function(){delete S.known[w[0]];save();nextCard();};
+  $("vyes").onclick=function(){if(!S.known[w[0]]){S.known[w[0]]=1;addXP(5);}nextCard();};
+}
+
+/* ---------- LUYỆN TẬP ---------- */
+var Q=null;
+function buildQuiz(){
+  var all=[];Object.keys(VOCAB).forEach(function(k){VOCAB[k].forEach(function(w){all.push(w)})});
+  var qs=shuffle(all).slice(0,6).map(function(w){
+    var wrong=shuffle(all.filter(function(x){return x[0]!==w[0]})).slice(0,3).map(function(x){return x[2]});
+    var opts=shuffle([w[2]].concat(wrong));
+    return {q:'Nghĩa của “'+w[0]+'” là gì?',o:opts,a:opts.indexOf(w[2]),e:w[0]+" "+w[1]+" = "+w[2]+'. Ví dụ: '+w[3],say:w[0]};
+  });
+  var gq=shuffle(GQ).slice(0,4).map(function(g){return {q:g[0],o:g[1],a:g[2],e:g[3]}});
+  Q={list:shuffle(qs.concat(gq)),i:0,score:0,done:false,picked:-1};
+}
+function quiz(){
+  if(!Q)buildQuiz();
+  if(Q.done){
+    var pct=Math.round(Q.score/Q.list.length*100);
+    var msg=pct>=80?"Xuất sắc! Hãy thử chủ đề mới.":pct>=50?"Khá tốt! Ôn lại các câu sai để tiến bộ.":"Đừng nản. Học lại thẻ từ vựng rồi thử lần nữa.";
+    $("main").innerHTML='<h2>Kết quả</h2><div class="card big"><div class="n">'+Q.score+'/'+Q.list.length+'</div><p>'+msg+'</p></div><button class="btn" id="again">Làm bài mới</button>';
+    $("again").onclick=function(){Q=null;quiz();};return;
+  }
+  var c=Q.list[Q.i],answered=Q.picked>=0;
+  var h='<div class="bar"><i style="width:'+(Q.i/Q.list.length*100)+'%"></i></div><div class="hint">Câu '+(Q.i+1)+'/'+Q.list.length+'</div><div class="card"><div class="q">'+c.q+'</div>';
+  c.o.forEach(function(o,k){
+    var cl="opt";if(answered){if(k===c.a)cl+=" ok";else if(k===Q.picked)cl+=" bad";}
+    h+='<button class="'+cl+'" data-k="'+k+'">'+o+'</button>';
+  });
+  if(answered){var good=Q.picked===c.a;h+='<div class="fb '+(good?'ok':'bad')+'"><b>'+(good?'Chính xác! +10 XP':'Chưa đúng.')+'</b><br>'+c.e+'</div>';}
+  h+='</div>';
+  if(answered)h+='<button class="btn" id="nx">'+(Q.i+1===Q.list.length?'Xem kết quả':'Câu tiếp theo')+'</button>';
+  $("main").innerHTML='<h2>Luyện tập</h2>'+h;
+  document.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){
+    if(Q.picked>=0)return;Q.picked=+b.dataset.k;
+    if(Q.picked===c.a){Q.score++;addXP(10);}
+    if(c.say)speak(c.say,.8);quiz();};});
+  if(answered)$("nx").onclick=function(){Q.i++;Q.picked=-1;if(Q.i>=Q.list.length)Q.done=true;quiz();};
+}
+
+/* ---------- NGỮ PHÁP ---------- */
+function gram(){
+  var h='<h2>Ngữ pháp cốt lõi</h2>';
+  GRAM.forEach(function(g,i){
+    h+='<details><summary>'+(i+1)+'. '+g.t+'</summary><div class="in"><div class="rule">'+g.rule+'</div>'+((g.m||TIPS[i])?'<div class="tip"> <b>Mẹo nhớ:</b> '+(g.m||TIPS[i])+'</div>':'');
+    g.eg.forEach(function(e){h+='<div class="eg"><button class="spk" data-say="'+esc(e[0])+'">Nghe</button><div>'+e[0]+'<em>'+e[1]+'</em></div></div>';});
+    h+='</div></details>';
+  });
+  h+='<p class="hint">Học xong, sang tab Luyện tập để kiểm tra.</p>';
+  $("main").innerHTML=h;
+  document.querySelectorAll(".spk").forEach(function(b){b.onclick=function(){speak(b.dataset.say)}});
+}
+
+/* ---------- GIAO TIẾP ---------- */
+var tIdx=0,dict=null;
+function talk(){
+  var h='<h2>Giao tiếp thực tế</h2><div class="chips">'+TALK.map(function(t,i){return '<button class="chip'+(i===tIdx?' on':'')+'" data-i="'+i+'">'+t.t+'</button>'}).join("")+'</div>';
+  TALK[tIdx].p.forEach(function(p,k){
+    h+='<div class="card eg" style="border-top:1px solid var(--line)"><button class="spk" data-say="'+esc(p[0])+'">Nghe</button><div>'+p[0]+'<em>'+p[1]+'</em></div></div>';
+  });
+  h+='<div class="card"><b>Nghe và gõ lại</b><div class="hint" style="text-align:left">Bấm nghe rồi gõ lại câu bạn nghe được.</div>'
+   +'<div class="row"><button class="btn alt" id="dn">Nghe</button><button class="btn alt" id="ds">Nghe chậm</button></div>'
+   +'<input type="text" id="di" placeholder="Gõ câu bạn nghe được..." autocomplete="off" autocapitalize="off">'
+   +'<button class="btn" id="dc">Kiểm tra</button><div id="dr"></div></div>';
+  $("main").innerHTML=h;
+  document.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){tIdx=+b.dataset.i;dict=null;talk();}});
+  document.querySelectorAll(".spk").forEach(function(b){b.onclick=function(){speak(b.dataset.say)}});
+  function pick(){if(!dict){var ps=TALK[tIdx].p;dict=ps[Math.floor(Math.random()*ps.length)];}return dict[0];}
+  $("dn").onclick=function(){speak(pick(),.95)};
+  $("ds").onclick=function(){speak(pick(),.6)};
+  $("dc").onclick=function(){
+    if(!dict){$("dr").innerHTML='<div class="fb bad">Hãy bấm Nghe trước.</div>';return;}
+    var norm=function(s){return s.toLowerCase().replace(/[’‘]/g,"'").replace(/[^a-z0-9' ]/g," ").split(/\s+/).filter(Boolean)};
+    var a=norm(dict[0]),b=norm($("di").value),ok=0;
+    a.forEach(function(w,i){if(b[i]===w)ok++});
+    var pct=Math.round(ok/a.length*100);
+    $("dr").innerHTML='<div class="fb '+(pct>=80?'ok':'bad')+'"><b>'+pct+'% chính xác'+(pct>=80?' +15 XP':'')+'</b><br>Đáp án: '+dict[0]+'<br>'+dict[1]+'</div>';
+    if(pct>=80){addXP(15);dict=null;}
+  };
+}
+
+/* ---------- ĐIỀU HƯỚNG ---------- */
+/* ---------- TRÒ CHƠI ---------- */
+var G={};
+function allW(){var a=[];for(var k in VOCAB)VOCAB[k].forEach(function(w){a.push(w)});return a}
+function singles(){return allW().filter(function(w){return /^[a-z]{4,10}$/.test(w[0])})}
+function game(){
+  if(G.mode==="l")return gListen();if(G.mode==="c")return gCloze();if(G.mode==="t")return gTime();if(G.mode==="m")return gMatch();if(G.mode==="s")return gScr();if(G.mode==="h")return gHang();
+  $("main").innerHTML='<h2>Trò chơi</h2><div class="card"><b>Ghép từ</b><div class="hint" style="text-align:left">Nối từ tiếng Anh với nghĩa. Ghép đúng cả 5 cặp được +20 XP.</div><button class="btn" data-m="m">Chơi ghép từ</button></div>'
+   +'<div class="card"><b>Xếp chữ</b><div class="hint" style="text-align:left">Sắp lại chữ cái thành từ đúng. Mỗi từ +8 XP.</div><button class="btn" data-m="s">Chơi xếp chữ</button></div>'
+   +'<div class="card"><b>Đoán chữ</b><div class="hint" style="text-align:left">Đoán từng chữ cái, sai tối đa 6 lần. Đoán đúng +12 XP.</div><button class="btn" data-m="h">Chơi đoán chữ</button></div>'
+   +'<div class="card"><b>Nghe đoán nghĩa</b><div class="hint" style="text-align:left">Nghe một từ, chọn nghĩa tiếng Việt đúng. Mỗi câu đúng +6 XP.</div><button class="btn" data-m="l">Chơi nghe đoán</button></div>'
+   +'<div class="card"><b>Điền từ vào câu</b><div class="hint" style="text-align:left">Chọn từ đúng để hoàn thành câu ví dụ. Mỗi câu đúng +8 XP.</div><button class="btn" data-m="c">Chơi điền từ</button></div>'
+   +'<div class="card"><b>Đua 30 giây: Đúng hay Sai</b><div class="hint" style="text-align:left">Nghĩa đưa ra đúng hay sai? Trả lời càng nhiều càng tốt trong 30 giây.</div><button class="btn" data-m="t">Bắt đầu đua</button></div>';
+  document.querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){G.mode=b.dataset.m;G.mt=G.sc=G.hg=G.ls=G.cl=G.tm=null;game();}});
+}
+function back(){return '<button class="btn alt" id="gb" style="margin-top:6px">Về danh sách trò chơi</button>'}
+function bindBack(){$("gb").onclick=function(){G.mode=null;game();}}
+function gMatch(){
+  if(!G.mt){var ws=shuffle(allW()).slice(0,5);G.mt={en:shuffle(ws),vi:shuffle(ws),sel:null,done:{},n:0,bad:""};}
+  var m=G.mt,h='<h2>Ghép từ</h2><div class="hint">Chọn một từ, rồi chọn nghĩa tương ứng ('+m.n+'/5)</div><div class="g"><div>';
+  var cell=function(w,side){var id=side+w[0],c="opt";if(m.done[w[0]])c+=" ok";else if(m.sel&&m.sel.id===id)c+=" ok";else if(m.bad===id)c+=" bad";
+    return '<button class="'+c+'" data-w="'+esc(w[0])+'" data-s="'+side+'" style="margin-bottom:8px">'+(side==="e"?w[0]:w[2])+'</button>'};
+  m.en.forEach(function(w){h+=cell(w,"e")});h+='</div><div>';m.vi.forEach(function(w){h+=cell(w,"v")});h+='</div></div>';
+  if(m.n===5)h+='<div class="fb ok"><b>Hoàn thành! +20 XP</b></div><button class="btn" id="gn">Chơi lượt mới</button>';
+  $("main").innerHTML=h+back();bindBack();
+  if(m.n===5){$("gn").onclick=function(){G.mt=null;gMatch()};}
+  document.querySelectorAll("[data-w]").forEach(function(b){b.onclick=function(){
+    var w=b.dataset.w,sd=b.dataset.s;if(m.done[w])return;m.bad="";
+    if(sd==="e")speak(w,.8);
+    if(m.sel&&m.sel.s!==sd){
+      if(m.sel.w===w){m.done[w]=1;m.n++;m.sel=null;addXP(2);if(m.n===5)addXP(20);}
+      else{m.bad=sd+w;m.sel=null;}
+    }else m.sel={id:sd+w,s:sd,w:w};
+    gMatch();};});
+}
+function gScr(next){
+  if(next||!G.sc){var w=shuffle(singles())[0],x;do{x=shuffle(w[0].split("")).join("")}while(x===w[0]);G.sc={w:w,x:x,r:null};}
+  var g=G.sc;
+  $("main").innerHTML='<h2>Xếp chữ</h2><div class="card"><div class="hint">Nghĩa: <b>'+g.w[2]+'</b></div><div class="sc">'+g.x.toUpperCase().split("").join(" ")+'</div><input type="text" id="si" placeholder="Gõ từ đúng..." autocomplete="off" autocapitalize="off"><div class="row"><button class="btn" id="sc">Kiểm tra</button><button class="btn alt" id="ss">Nghe gợi ý</button></div><div id="sr">'+(g.r||"")+'</div></div><button class="btn alt" id="sn">Từ khác</button>'+back();
+  bindBack();
+  $("ss").onclick=function(){speak(g.w[0],.8)};$("sn").onclick=function(){gScr(true)};
+  $("sc").onclick=function(){var v=$("si").value.trim().toLowerCase();
+    if(v===g.w[0]){addXP(8);g.r='<div class="fb ok"><b>Chính xác! +8 XP</b><br>'+g.w[0]+' '+g.w[1]+'</div>';}
+    else g.r='<div class="fb bad">Chưa đúng, thử lại nhé.</div>';
+    var keep=v;gScr();$("si").value=v===g.w[0]?"":keep;};
+}
+function gHang(next){
+  if(next||!G.hg)G.hg={w:shuffle(singles())[0],g:[],l:6};
+  var g=G.hg,word=g.w[0],shown=word.split("").map(function(c){return g.g.indexOf(c)>=0?c:"_"}).join(" ");
+  var won=shown.replace(/ /g,"")===word,lost=g.l<=0,h='<h2>Đoán chữ</h2><div class="card"><div class="hint">Nghĩa: <b>'+g.w[2]+'</b> · Còn '+g.l+' lượt sai</div><div class="sc">'+(lost?word.split("").join(" "):shown).toUpperCase()+'</div>';
+  if(won)h+='<div class="fb ok"><b>Đúng rồi! +12 XP</b><br>'+word+' '+g.w[1]+'</div>';
+  else if(lost)h+='<div class="fb bad"><b>Hết lượt.</b> Đáp án: '+word+'</div>';
+  else"abcdefghijklmnopqrstuvwxyz".split("").forEach(function(c){h+='<button class="chip lt'+(g.g.indexOf(c)>=0?" on":"")+'" data-l="'+c+'">'+c.toUpperCase()+'</button>'});
+  h+='</div>'+((won||lost)?'<button class="btn" id="hn">Từ mới</button>':'')+back();
+  $("main").innerHTML=h;bindBack();
+  if(won||lost){$("hn").onclick=function(){gHang(true)};}
+  document.querySelectorAll("[data-l]").forEach(function(b){b.onclick=function(){var c=b.dataset.l;if(g.g.indexOf(c)>=0)return;g.g.push(c);
+    if(word.indexOf(c)<0)g.l--;else if(word.split("").every(function(x){return g.g.indexOf(x)>=0}))addXP(12);gHang();};});
+}
+/* ---------- QUÉT NHÃN ---------- */
+var LBL=[["net weight","khối lượng tịnh"],["gross weight","khối lượng cả bì"],["expiry date","hạn sử dụng"],["best before","nên dùng trước ngày"],["use by","dùng trước ngày"],["manufacturing date","ngày sản xuất"],["mfg","ngày sản xuất (viết tắt)"],["exp","hạn dùng (viết tắt)"],["batch no","số lô"],["lot no","số lô"],["made in","sản xuất tại"],["product of","sản phẩm của (xuất xứ)"],["manufactured by","nhà sản xuất"],["imported by","nhà nhập khẩu"],["distributed by","nhà phân phối"],["ingredients","thành phần"],["nutrition facts","thông tin dinh dưỡng"],["serving size","khẩu phần"],["calories","năng lượng (calo)"],["protein","chất đạm"],["fat","chất béo"],["carbohydrate","tinh bột"],["sugar","đường"],["sodium","natri (muối)"],["allergen","chất gây dị ứng"],["contains","có chứa"],["warning","cảnh báo"],["caution","thận trọng"],["keep out of reach of children","để xa tầm tay trẻ em"],["store in a cool dry place","bảo quản nơi khô mát"],["keep refrigerated","bảo quản lạnh"],["do not","không được"],["flammable","dễ cháy"],["handle with care","xử lý nhẹ tay"],["this side up","hướng này lên trên"],["keep dry","giữ khô"],["recyclable","có thể tái chế"],["directions","hướng dẫn sử dụng"],["instructions","hướng dẫn"],["voltage","điện áp"],["power","công suất"],["capacity","dung tích"],["material","chất liệu"],["size","kích cỡ"],["color","màu sắc"],["quantity","số lượng"],["qty","số lượng"],["warranty","bảo hành"],["model","mẫu mã"],["dimensions","kích thước"],["origin","xuất xứ"],["pcs","cái"]];
+function gloss(line){var l=line.toLowerCase(),r=[],seen={};
+  LBL.concat(allW().map(function(w){return [w[0],w[2]]})).forEach(function(p){
+    if(seen[p[0]])return;var re=new RegExp("\\b"+p[0].toLowerCase().replace(/[^a-z0-9 ]/g,"")+"\\b");
+    if(re.test(l.replace(/[^a-z0-9 ]/g," "))){seen[p[0]]=1;r.push(p)}});
+  return r.slice(0,6)}
+function decode(t){var d=document.createElement("textarea");d.innerHTML=t;return d.value}
+function tr(q){return new Promise(function(ok){var done=false,t=setTimeout(function(){if(!done){done=true;ok(null)}},9000);
+  fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(q.slice(0,450))+"&langpair=en|vi").then(function(r){return r.json()}).then(function(j){
+    if(!done){done=true;clearTimeout(t);ok(j&&j.responseData&&j.responseData.translatedText?decode(j.responseData.translatedText):null)}}).catch(function(){if(!done){done=true;ok(null)}})})}
+function stat(m){$("sst").innerHTML=m}
+function loadTess(cb){if(window.Tesseract)return cb();var e=document.createElement("script");
+  e.src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";e.onload=cb;
+  e.onerror=function(){stat('<div class="fb bad">Không tải được bộ nhận dạng chữ. Hãy kiểm tra internet, hoặc gõ nội dung nhãn vào ô bên dưới rồi bấm Dịch.</div>')};document.head.appendChild(e)}
+function scan(){
+  $("main").innerHTML='<h2>Quét nhãn hàng hóa</h2><div class="card"><div class="hint" style="text-align:left">Chụp nhãn tiếng Anh thật rõ, đủ sáng, chữ nằm ngang. Cần internet để đọc chữ và dịch.</div>'
+  +'<label class="btn" style="display:block;text-align:center;margin-bottom:8px">Chụp ảnh nhãn<input type="file" id="sf" accept="image/*" capture="environment" style="display:none"></label>'
+  +'<label class="btn alt" style="display:block;text-align:center">Chọn ảnh từ thư viện<input type="file" id="sg" accept="image/*" style="display:none"></label>'
+  +'<img id="pv" class="pv" alt="" style="display:none"><div id="sst"></div></div>'
+  +'<div class="card"><b>Chữ đọc được (có thể sửa hoặc tự gõ)</b><textarea id="sx" rows="5" placeholder="Net weight 500 g&#10;Best before: 12/2027&#10;Made in Thailand"></textarea><button class="btn" id="sd">Dịch sang tiếng Việt</button></div><div id="sr"></div>'
+  +'<p class="hint">Bản dịch tự động chỉ để tham khảo. Với hàng hóa, thuốc, thực phẩm hay chứng từ quan trọng, hãy đối chiếu lại nhãn gốc.</p>';
+  function pick(e){var f=e.target.files&&e.target.files[0];if(!f)return;
+    var url=URL.createObjectURL(f);$("pv").src=url;$("pv").style.display="block";stat('<div class="hint">Đang chuẩn bị ảnh...</div>');
+    var img=new Image();img.onload=function(){var k=Math.min(1,1600/Math.max(img.width,img.height)),c=document.createElement("canvas");
+      c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      loadTess(function(){Tesseract.recognize(c,"eng",{logger:function(m){stat('<div class="hint">'+(m.status==="recognizing text"?"Đang đọc chữ... "+Math.round(m.progress*100)+"%":"Đang chuẩn bị dữ liệu lần đầu, vui lòng chờ...")+'</div>')}})
+        .then(function(r){$("sx").value=r.data.text.trim();stat('<div class="fb ok">Đọc xong. Kiểm tra và sửa lỗi nếu cần.</div>');dich();})
+        .catch(function(){stat('<div class="fb bad">Không đọc được chữ. Thử chụp lại gần hơn, hoặc gõ nội dung vào ô bên dưới.</div>')});});};
+    img.onerror=function(){stat('<div class="fb bad">Không mở được ảnh này.</div>')};img.src=url;}
+  $("sf").onchange=pick;$("sg").onchange=pick;$("sd").onclick=dich;
+}
+function dich(){
+  var lines=$("sx").value.split(/\n+/).map(function(l){return l.trim()}).filter(function(l){return /[A-Za-z]{2}/.test(l)}).slice(0,15);
+  if(!lines.length){$("sr").innerHTML='<div class="fb bad">Chưa có chữ để dịch.</div>';return;}
+  var h="";lines.forEach(function(l,i){var g=gloss(l);
+    h+='<div class="card"><div class="eg" style="border:0;padding:0"><button class="spk" data-say="'+esc(l)+'">Nghe</button><div><b>'+esc(l)+'</b><span id="t'+i+'" class="tm" style="display:block;font-size:16px;color:var(--blue)">Đang dịch...</span></div></div>'
+      +(g.length?'<div class="tm">Thuật ngữ: '+g.map(function(x){return esc(x[0])+' = '+esc(x[1])}).join("; ")+'</div>':'')+'</div>';});
+  $("sr").innerHTML=h;
+  document.querySelectorAll("#sr .spk").forEach(function(b){b.onclick=function(){speak(b.dataset.say)}});
+  (function next(i){if(i>=lines.length)return;tr(lines[i]).then(function(t){var el=$("t"+i);if(!el)return;
+    el.textContent=t||"Chưa dịch được. Cần internet, bạn có thể xem phần thuật ngữ bên dưới.";next(i+1)})})(0);
+}
+function rnd(a){return a[Math.floor(Math.random()*a.length)]}
+function mOpts(w){return shuffle([w[2]].concat(shuffle(allW().filter(function(x){return x[0]!==w[0]})).slice(0,3).map(function(x){return x[2]})))}
+function gListen(next){
+  var fresh=next||!G.ls;
+  if(fresh){var w=rnd(allW());G.ls={w:w,o:mOpts(w),p:-1,sc:G.ls?G.ls.sc:0};}
+  var g=G.ls,h='<h2>Nghe đoán nghĩa</h2><div class="hint">Điểm: '+g.sc+'</div><div class="card"><button class="btn alt" id="ln" style="margin-bottom:12px">Nghe từ</button>';
+  g.o.forEach(function(o,k){var c="opt";if(g.p>=0){if(o===g.w[2])c+=" ok";else if(k===g.p)c+=" bad"}h+='<button class="'+c+'" data-k="'+k+'">'+o+'</button>'});
+  if(g.p>=0)h+='<div class="fb '+(g.o[g.p]===g.w[2]?'ok':'bad')+'"><b>'+g.w[0]+'</b> '+g.w[1]+' = '+g.w[2]+'</div><button class="btn" id="lx">Từ tiếp theo</button>';
+  $("main").innerHTML=h+'</div>'+back();bindBack();
+  $("ln").onclick=function(){speak(g.w[0],.8)};if(fresh)setTimeout(function(){speak(g.w[0],.8)},250);
+  if(g.p>=0)$("lx").onclick=function(){gListen(true)};
+  document.querySelectorAll("[data-k]").forEach(function(b){b.onclick=function(){if(g.p>=0)return;g.p=+b.dataset.k;if(g.o[g.p]===g.w[2]){g.sc++;addXP(6)}gListen()}});
+}
+function gCloze(next){
+  if(next||!G.cl){var w,re;do{w=rnd(allW());re=new RegExp(w[0].replace(/[^a-zA-Z ]/g,""),"i")}while(!re.test(w[3]));
+    var o=shuffle([w[0]].concat(shuffle(allW().filter(function(x){return x[0]!==w[0]})).slice(0,3).map(function(x){return x[0]})));
+    G.cl={w:w,q:w[3].replace(re,"_____"),o:o,p:-1,sc:G.cl?G.cl.sc:0};}
+  var g=G.cl,h='<h2>Điền từ vào câu</h2><div class="hint">Điểm: '+g.sc+'</div><div class="card"><div class="q">'+g.q+'</div><div class="hint" style="text-align:left">Gợi ý nghĩa: '+g.w[2]+'</div>';
+  g.o.forEach(function(o,k){var c="opt";if(g.p>=0){if(o===g.w[0])c+=" ok";else if(k===g.p)c+=" bad"}h+='<button class="'+c+'" data-k="'+k+'">'+o+'</button>'});
+  if(g.p>=0)h+='<div class="fb '+(g.o[g.p]===g.w[0]?'ok':'bad')+'">'+g.w[3]+'</div><button class="btn" id="cx">Câu tiếp theo</button>';
+  $("main").innerHTML=h+'</div>'+back();bindBack();
+  if(g.p>=0)$("cx").onclick=function(){gCloze(true)};
+  document.querySelectorAll("[data-k]").forEach(function(b){b.onclick=function(){if(g.p>=0)return;g.p=+b.dataset.k;if(g.o[g.p]===g.w[0]){g.sc++;addXP(8);speak(g.w[3])}gCloze()}});
+}
+function gTime(){
+  clearInterval(G.iv);
+  var g=G.tm;
+  if(!g){$("main").innerHTML='<h2>Đua 30 giây</h2><div class="card big"><p>Nghĩa tiếng Việt đưa ra là đúng hay sai? Mỗi câu đúng +1 điểm, sai thì trừ 1.</p><button class="btn" id="go">Bắt đầu</button></div>'+back();bindBack();
+    $("go").onclick=function(){G.tm={t:30,sc:0,end:false};nextT();gTime()};return;}
+  if(g.end||g.t<=0){g.end=true;addXP(Math.max(0,g.sc));$("main").innerHTML='<h2>Hết giờ</h2><div class="card big"><div class="n">'+g.sc+'</div><p>điểm. Điểm số được cộng vào XP.</p><button class="btn" id="go">Chơi lại</button></div>'+back();bindBack();
+    $("go").onclick=function(){G.tm={t:30,sc:0,end:false};nextT();gTime()};return;}
+  $("main").innerHTML='<h2>Đua 30 giây</h2><div class="hint">Thời gian: <b id="tt">'+g.t+'</b> giây · Điểm: <b id="ts">'+g.sc+'</b></div><div class="card big"><div class="en" style="font-size:32px;font-weight:800">'+g.c.w[0]+'</div><div class="vi" style="font-size:22px;color:var(--blue);margin:8px 0 16px;font-weight:700">= '+g.c.m+'</div><div class="row"><button class="btn ok" id="ty">Đúng</button><button class="btn no" id="tn">Sai</button></div></div>'+back();bindBack();
+  G.iv=setInterval(function(){var a=document.querySelector("nav button.on");if(!a||a.dataset.t!=="game"||G.mode!=="t"||!$("tt")){clearInterval(G.iv);return}
+    g.t--;if(g.t<=0){clearInterval(G.iv);gTime()}else $("tt").textContent=g.t},1000);
+  function ans(v){if(v===g.c.ok)g.sc++;else g.sc--;nextT();gTime()}
+  $("ty").onclick=function(){ans(true)};$("tn").onclick=function(){ans(false)};
+}
+function nextT(){var w=rnd(allW()),ok=Math.random()<.5,m=w[2];if(!ok){var o;do{o=rnd(allW())}while(o[0]===w[0]);m=o[2]}G.tm.c={w:w,m:m,ok:ok}}
+var VIEWS={scan:scan,game:game,vocab:vocab,quiz:quiz,gram:gram,talk:talk};
+function go(t){
+  document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t===t)});
+  $("main").setAttribute("data-t",t);VIEWS[t]();$("main").scrollTop=0;
+}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){go(b.dataset.t)}});
+hud();go("vocab");
+</script>
+</body>
+</html>
